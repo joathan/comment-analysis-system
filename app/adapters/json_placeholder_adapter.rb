@@ -4,8 +4,13 @@ class JsonPlaceholderAdapter
   BASE_URL = 'http://localhost:3011'
 
   class << self
-    def fetch_user_posts(user_id)
-      get('/posts', userId: user_id)
+    def fetch_user(username)
+      users = get('/users')
+      users.find { |u| u['username'] == username }
+    end
+
+    def fetch_user_posts(external_user_id)
+      get('/posts', userId: external_user_id)
     end
 
     def fetch_post_comments(post_id)

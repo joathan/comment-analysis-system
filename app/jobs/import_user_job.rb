@@ -5,7 +5,7 @@ class ImportUserJob < ApplicationJob
 
   def perform(username:)
     RedisStore.set("job_status:#{job_id}", 'processing')
-    ImportUserService.new(username).call
+    ImportUserService.new(username: username).call
     RedisStore.set("job_status:#{job_id}", 'done')
   rescue StandardError => e
     Rails.logger.error("ImportUserJob failed: #{e.message}")

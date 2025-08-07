@@ -1,52 +1,46 @@
 # frozen_string_literal: true
 
 class ImportUserService
-  def initialize(username)
+  def initialize(username:)
     @username = username
-    @logger = Rails.logger
   end
 
   def call
     user = find_or_create_user
-    import_posts_and_comments(user)
-    # TODO: Se necessário, adicionar jobs para processar comentários ou recalcular métricas
-    # RecalculateGroupMetricsJob.perform_later
+    import_posts(user)
+    ReprocessUserJob.perform_later(user_id: user.id)
   end
 
   private
 
   def find_or_create_user
-    User.find_or_create_by!(username: @username)
-  rescue ActiveRecord::RecordInvalid => e
-    @logger.error("[ImportUserService] Falha ao criar usuário: #{e.message}")
-    raise
-  end
-
-  def import_posts_and_comments(user)
-    posts = JsonPlaceholderAdapter.fetch_user_posts(user.id)
-    posts.each do |post_attrs|
-      post = user.posts.find_or_create_by!(
-        title: post_attrs['title'],
-        body: post_attrs['body']
-      )
-      import_comments_for_post(post)
-    rescue StandardError => e
-      @logger.error("[ImportUserService] Falha no post #{post_attrs["id"]}: #{e.message}")
+    data = JsonPlaceholderAdapter.fetch_user(@username)
+    User.find_or_create_by!(external_id: data['id']) do |user|
+      user.username = data['username']
+      user.name = data['name']
+      user.email = data['email']
     end
   end
 
-  def import_comments_for_post(post)
-    comments = JsonPlaceholderAdapter.fetch_post_comments(post.id)
-    comments.each do |comment_attrs|
-      comment = post.comments.find_or_create_by!(
-        name: comment_attrs['name'],
-        email: comment_attrs['email'],
-        body: comment_attrs['body']
-      )
+  def import_posts(user)
+    JsonPlaceholderAdapter.fetch_user_posts(user.external_id).each do |post_data|
+      post = Post.find_or_create_by!(external_id: post_data['id']) do |p|
+        p.user = user
+        p.title = post_data['title']
+        p.body = post_data['body']
+      end
 
-      ProcessCommentJob.perform_later(comment.id)
-    rescue StandardError => e
-      @logger.error("[ImportUserService] Falha no comentário do post #{post.id}: #{e.message}")
+      import_comments(post)
+    end
+  end
+
+  def import_comments(post)
+    JsonPlaceholderAdapter.fetch_post_comments(post.external_id).each do |comment_data|
+      Comment.find_or_create_by!(external_id: comment_data['id']) do |c|
+        c.post = post
+        c.email = comment_data['email']
+        c.body = comment_data['body']
+      end
     end
   end
 end
