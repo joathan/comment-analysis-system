@@ -3,6 +3,7 @@
 class Keyword < ApplicationRecord
   validates :word, presence: true, uniqueness: true
 
+  # TODO: Melhorar performance usando redis
   def self.approved?(text)
     return false if text.blank?
 
