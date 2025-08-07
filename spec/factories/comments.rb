@@ -8,4 +8,12 @@ FactoryBot.define do
     state { :new }
     association :post
   end
+
+  trait :approved do
+    state { 'approved' }
+  end
+
+  trait :rejected do
+    state { 'rejected' }
+  end
 end

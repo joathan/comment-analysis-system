@@ -12,7 +12,7 @@ class Comment < ApplicationRecord
     state :rejected
 
     event :process do
-      transitions from: :new, to: :processing
+      transitions from: %i[new approved rejected], to: :processing
     end
 
     event :approve do
