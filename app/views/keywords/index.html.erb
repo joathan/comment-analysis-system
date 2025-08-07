@@ -1,22 +1,28 @@
-<h1>Keywords</h1>
-<%= link_to "Nova Keyword", new_keyword_path, class: "btn btn-primary" %>
+<div class="max-w-3xl mx-auto mt-12">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-xl font-bold text-neutral">Palavras-chave</h1>
+    <%= link_to "Nova Keyword", new_keyword_path, class: "btn btn-neutral" %>
+  </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Word</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @keywords.each do |keyword| %>
-      <tr>
-        <td><%= keyword.term %></td>
-        <td>
-          <%= link_to "Editar", edit_keyword_path(keyword) %> |
-          <%= link_to "Remover", keyword, method: :delete, data: { confirm: "Tem certeza?" } %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  <div class="overflow-x-auto rounded-xl shadow-sm bg-white border border-neutral/10">
+    <table class="table w-full">
+      <thead>
+        <tr>
+          <th class="text-left font-semibold text-sm text-neutral">Palavra-chave</th>
+          <th class="text-right font-semibold text-sm text-neutral">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @keywords.each do |keyword| %>
+          <tr class="hover:bg-neutral/5 transition">
+            <td class="py-3 px-4"><%= keyword.term %></td>
+            <td class="text-right py-3 px-4">
+              <%= link_to "Editar", edit_keyword_path(keyword), class: "btn btn-xs btn-outline mr-2" %>
+              <%= link_to "Remover", keyword, method: :delete, data: { confirm: "Tem certeza?" }, class: "btn btn-xs btn-outline btn-error" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,5 +1,4 @@
-<h1><%= action_name == "new" ? "Nova" : "Editar" %> Keyword</h1>
-
-<%= render "form", keyword: @keyword %>
-
-<%= link_to "Voltar", keywords_path %>
+<div class="max-w-lg mx-auto bg-white shadow-sm rounded-xl mt-12 p-8 border border-neutral/10">
+  <h1 class="text-xl font-bold mb-6 text-neutral">Editar Keyword</h1>
+  <%= render "form", keyword: @keyword %>
+</div>

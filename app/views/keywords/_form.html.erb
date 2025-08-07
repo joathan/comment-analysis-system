@@ -1,18 +1,19 @@
-<%= form_with(model: keyword, local: true) do |f| %>
+<%= form_with(model: keyword, local: true, html: { class: "max-w-md mx-auto" }) do |f| %>
   <% if keyword.errors.any? %>
-    <div>
-      <ul>
+    <div class="alert bg-neutral text-neutral-content mb-4 border border-neutral-content/20 rounded">
+      <ul class="list-disc pl-5">
         <% keyword.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
-  <div>
-    <%= f.label :term, "Palavra-chave" %>
-    <%= f.text_field :term, autofocus: true %>
+  <div class="form-control mb-6">
+    <%= f.label :term, "Palavra-chave", class: "label font-semibold text-base" %>
+    <%= f.text_field :term, autofocus: true, class: "input input-bordered w-full border border-neutral rounded focus:outline-none focus:ring focus:border-neutral-focus" %>
   </div>
-  <div>
-    <%= f.submit %>
+  <div class="flex gap-3 justify-end">
+    <%= f.submit "Salvar", class: "btn btn-neutral px-6" %>
+    <%= link_to "Voltar", keywords_path, class: "btn btn-outline px-6" %>
   </div>
 <% end %>
