@@ -7,4 +7,5 @@ SimpleCov.start do
   add_group 'Models', '/app/models/'
   add_group 'Services', '/app/services/'
   add_group 'Adapters', '/app/adapters/'
+  add_group 'Jobs', '/app/jobs/'
 end
