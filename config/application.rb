@@ -31,5 +31,6 @@ module CommentAnalysisSystem
     config.generators.system_tests = nil
 
     config.autoload_paths << Rails.root.join('lib')
+    config.i18n.load_path += Dir[Rails.root.join('config/locales/**/*.{rb,yml}')]
   end
 end

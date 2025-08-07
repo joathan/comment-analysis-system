@@ -1,0 +1,26 @@
+en:
+  faker:
+    comment:
+      positive:
+        - "Excellent work, congratulations!"
+        - "Very helpful and well written."
+        - "I loved this feature!"
+        - "Makes my life much easier."
+        - "Clear and objective, great job!"
+        - "I really appreciate the effort put into this."
+        - "This is a game changer!"
+        - "Absolutely fantastic!"
+        - "I can't believe how useful this is!"
+        - "This exceeded my expectations!"
+      negative:
+        - "I had a bad experience with this."
+        - "Could be much better."
+        - "Did not work as expected."
+        - "Not helpful at all."
+        - "Poorly implemented."
+      neutral:
+        - "It's ok."
+        - "Nothing special."
+        - "Works as described."
+        - "No issues, but nothing outstanding."
+        - "Standard, as expected."
