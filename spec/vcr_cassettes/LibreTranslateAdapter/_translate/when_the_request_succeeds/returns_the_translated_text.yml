@@ -1,0 +1,51 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://localhost:5001/translate
+    body:
+      encoding: UTF-8
+      string: '{"q":"Hello, how are you?","source":"en","target":"pt-BR","format":"text"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Authorization, Content-Type
+      Access-Control-Allow-Methods:
+      - GET, POST
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Expose-Headers:
+      - Authorization
+      Access-Control-Max-Age:
+      - '1728000'
+      Content-Length:
+      - '37'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 07 Aug 2025 03:56:50 GMT
+      Server:
+      - waitress
+      Set-Cookie:
+      - session=39ce4f0a-9288-4f6c-b319-04175aa1fc3a; Expires=Sun, 07 Sep 2025 03:56:50
+        GMT; HttpOnly; Path=/
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJ0cmFuc2xhdGVkVGV4dCI6Ik9sw6EsIGNvbW8gdmFpPyJ9Cg==
+  recorded_at: Thu, 07 Aug 2025 03:56:50 GMT
+recorded_with: VCR 6.3.1
