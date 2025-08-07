@@ -1,0 +1,132 @@
+inherit_from: .rubocop_todo.yml
+
+plugins:
+  - rubocop-performance
+  - rubocop-rspec
+  - rubocop-rails
+
+AllCops:
+  TargetRubyVersion: 2.7
+  NewCops: disable
+  Exclude:
+    - "node_modules/**/*"
+    - "vendor/**/*"
+    - "tmp/**/*"
+    - "bin/**/*"
+    - "log/**/*"
+    - "Gemfile"
+    - "db/schema.rb"
+    - "db/seeds.rb"
+    - ".*"
+
+Metrics/BlockLength:
+  Max: 80
+  Exclude:
+    - "spec/**/*"
+
+Metrics/AbcSize:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - "db/migrate/**/*"
+
+Style/GuardClause:
+  Exclude:
+    - "db/migrate/**/*"
+
+Lint/UselessAssignment:
+  Exclude:
+    - "db/migrate/**/*"
+
+Metrics/MethodLength:
+  Exclude:
+    - "db/migrate/**/*"
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - "db/migrate/**/*"
+
+# Configurações RSpec
+RSpec/ContextWording:
+  Prefixes:
+    - before
+    - after
+    - when
+    - with
+    - without
+    - if
+    - unless
+    - for
+
+RSpec/DescribeClass:
+  Enabled: true
+  Exclude:
+    - "spec/lib/tasks/**/*"
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/ExpectChange:
+  Enabled: false
+
+RSpec/HookArgument:
+  Enabled: false
+
+RSpec/ImplicitExpect:
+  EnforcedStyle: should
+
+RSpec/ImplicitSubject:
+  Enabled: false
+
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Exclude:
+    - "spec/acceptance/**/*"
+    - "spec/features/**/*"
+
+RSpec/ScatteredSetup:
+  Exclude:
+    - "spec/acceptance/**/*"
+
+RSpec/VariableName:
+  Exclude:
+    - "spec/acceptance/**/*"
+
+RSpec/EmptyExampleGroup:
+  Exclude:
+    - "spec/acceptance/**/*"
+
+Style/Documentation:
+  Enabled: false
+
+Style/HashSyntax:
+  EnforcedStyle: ruby19_no_mixed_keys
+
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    default: "[]"
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
+
+Style/AsciiComments:
+  Enabled: false
+
+Performance/RedundantMerge:
+  Enabled: false

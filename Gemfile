@@ -50,6 +50,12 @@ group :development, :test do
   gem 'faker'
   gem 'pry-rails'
   gem 'rspec-rails'
+  gem 'rubocop', require: false
+  gem 'rubocop-factory_bot', "~> 2.27", ">= 2.27.1"
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rails-omakase', require: false
+  gem 'rubocop-rspec', require: false
 end
 
 group :development do
