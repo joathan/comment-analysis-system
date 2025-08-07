@@ -31,7 +31,7 @@ class ImportUserService
       )
       import_comments_for_post(post)
     rescue StandardError => e
-      @logger.error("[ImportUserService] Falha no post #{post_attrs['id']}: #{e.message}")
+      @logger.error("[ImportUserService] Falha no post #{post_attrs["id"]}: #{e.message}")
     end
   end
 
@@ -43,8 +43,8 @@ class ImportUserService
         email: comment_attrs['email'],
         body: comment_attrs['body']
       )
-      #  TODO: Se necessário, adicionar job para processar o comentário
-      # ProcessCommentJob.perform_later(comment.id)
+
+      ProcessCommentJob.perform_later(comment.id)
     rescue StandardError => e
       @logger.error("[ImportUserService] Falha no comentário do post #{post.id}: #{e.message}")
     end
