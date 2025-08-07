@@ -5,7 +5,7 @@ module Api
     class ProgressController < ApplicationController
       def show
         job_id = params[:job_id]
-        status = Redis.current.get("job_status:#{job_id}") || 'unknown'
+        status = RedisStore.get("job_status:#{job_id}") || 'unknown'
 
         render json: {
           job_id: job_id,

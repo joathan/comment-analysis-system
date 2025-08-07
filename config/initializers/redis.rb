@@ -1,1 +1,4 @@
-Redis.current = Redis.new(url: ENV.fetch('REDIS_URL', 'redis://localhost:6379/1'))
+# frozen_string_literal: true
+
+RedisStore.client.ping
+Rails.logger.info('[Redis] conexão estabelecida com sucesso.')
