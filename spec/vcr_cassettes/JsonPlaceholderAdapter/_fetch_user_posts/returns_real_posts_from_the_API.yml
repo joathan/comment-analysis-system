@@ -1,0 +1,93 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://localhost:3011/posts?userId=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - tinyhttp
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, HEAD, PUT, PATCH, POST, DELETE
+      Access-Control-Allow-Headers:
+      - content-type
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 07 Aug 2025 02:22:14 GMT
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=5
+      Content-Length:
+      - '1811'
+    body:
+      encoding: UTF-8
+      string: |-
+        [
+          {
+            "id": "1",
+            "userId": 1,
+            "title": "Sit appositus ultio vindico angelus dignissimos.",
+            "body": "Coniecto assumenda tantillus. Cresco cernuus corporis. Careo repellendus aut. Colloco vinum undique. Venustas allatus aestas."
+          },
+          {
+            "id": "2",
+            "userId": 1,
+            "title": "Id voluptas cubo officiis aut et.",
+            "body": "Omnis verbera celebrer. Eum dedecor summisse. Uter vinum arbustum. Bos argentum tot. Quas antepono quis."
+          },
+          {
+            "id": "3",
+            "userId": 1,
+            "title": "Aeneus sed dolorem absum vergo correptius.",
+            "body": "Usque velum allatus. Voveo vulgaris verto. Celer in consuasor. Vulgus caelestis sollicito. Tum talus synagoga. Ipsum corrupti tabula."
+          },
+          {
+            "id": "4",
+            "userId": 1,
+            "title": "Combibo ab attero decet.",
+            "body": "Voluptas sui delinquo. Dolores crapula sed. Aegre audentia arcus. Nobis capto curriculum. Quibusdam deleo vito."
+          },
+          {
+            "id": "5",
+            "userId": 1,
+            "title": "Dolores cum clibanus absorbeo aequus.",
+            "body": "Arma amaritudo aggredior. Acidus explicabo audeo. Defessus via earum. Esse earum tyrannus. Tendo tamen audentia. Callide atqui defendo."
+          },
+          {
+            "id": "6",
+            "userId": 1,
+            "title": "Celo tracto officiis ocer vorago.",
+            "body": "Minus vel adopto. Vel alo strenuus. Colloco consequatur quam. Corporis deduco summisse. Cultura subito sequi. Confido varius vestrum."
+          },
+          {
+            "id": "7",
+            "userId": 1,
+            "title": "Laboriosam advenio ubi sollers angelus.",
+            "body": "Cavus cilicium delectus. Trado infit vitium. Necessitatibus ustilo vix. Armo arcus sed. Torqueo et aestas. Tergeo unde adimpleo."
+          },
+          {
+            "id": "8",
+            "userId": 1,
+            "title": "Curiositas suggero consequatur.",
+            "body": "Annus voluptas vitium. Suspendo vitium verecundia. Traho cerno pecco."
+          }
+        ]
+  recorded_at: Thu, 07 Aug 2025 02:22:14 GMT
+recorded_with: VCR 6.3.1

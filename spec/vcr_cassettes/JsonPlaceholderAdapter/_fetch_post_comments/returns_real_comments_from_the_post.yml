@@ -1,0 +1,87 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://localhost:3011/comments?postId=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - tinyhttp
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, HEAD, PUT, PATCH, POST, DELETE
+      Access-Control-Allow-Headers:
+      - content-type
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 07 Aug 2025 02:22:14 GMT
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=5
+      Content-Length:
+      - '1021'
+    body:
+      encoding: UTF-8
+      string: |-
+        [
+          {
+            "postId": 1,
+            "id": "1",
+            "name": "Vulgus pectus.",
+            "email": "billy@king.example",
+            "body": "Consequatur et dicta. Aut voluptatem veniam."
+          },
+          {
+            "postId": 1,
+            "id": "2",
+            "name": "Terra solutio.",
+            "email": "morton@schinner-strosin.test",
+            "body": "Doloremque debitis rerum. Eligendi repellat id."
+          },
+          {
+            "postId": 1,
+            "id": "3",
+            "name": "Cavus conforto.",
+            "email": "pete_dietrich@ernser.test",
+            "body": "Sequi optio enim. Est aperiam vitae."
+          },
+          {
+            "postId": 1,
+            "id": "4",
+            "name": "Deduco pecus.",
+            "email": "sophia@will.test",
+            "body": "Alias voluptatem ducimus. Aut cumque ipsum."
+          },
+          {
+            "postId": 1,
+            "id": "5",
+            "name": "Conscendo terebro.",
+            "email": "willetta@frami.test",
+            "body": "Rerum et officiis. Maiores voluptatibus corporis."
+          },
+          {
+            "postId": 1,
+            "id": "6",
+            "name": "Facilis umerus.",
+            "email": "berry_reilly@quitzon.test",
+            "body": "Qui veritatis et. Voluptatem architecto rerum."
+          }
+        ]
+  recorded_at: Thu, 07 Aug 2025 02:22:14 GMT
+recorded_with: VCR 6.3.1
