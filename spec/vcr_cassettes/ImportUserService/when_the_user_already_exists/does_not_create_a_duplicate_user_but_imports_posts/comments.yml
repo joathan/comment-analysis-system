@@ -1,0 +1,917 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://localhost:3011/posts?userId=2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - tinyhttp
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, HEAD, PUT, PATCH, POST, DELETE
+      Access-Control-Allow-Headers:
+      - content-type
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 07 Aug 2025 02:44:47 GMT
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=5
+      Content-Length:
+      - '2013'
+    body:
+      encoding: UTF-8
+      string: |-
+        [
+          {
+            "id": "9",
+            "userId": 2,
+            "title": "Est repudiandae at suasoria conitor.",
+            "body": "Nemo excepturi despecto. Curatio colloco nobis. Pecco arbustum optio. Adopto tremo ipsam."
+          },
+          {
+            "id": "10",
+            "userId": 2,
+            "title": "Curiositas textor una.",
+            "body": "Ut condico caute. Suspendo quis supellex. Et spiculum demulceo."
+          },
+          {
+            "id": "11",
+            "userId": 2,
+            "title": "Tempora tredecim defungo aut considero.",
+            "body": "Tempore copia deserunt. Cattus circumvenio omnis. Perspiciatis usque nisi. Astrum vel sursum. Cicuta conqueror acies."
+          },
+          {
+            "id": "12",
+            "userId": 2,
+            "title": "Cariosus accedo omnis.",
+            "body": "Sulum deorsum repellat. Centum nemo nobis. Trans suspendo corrumpo. Et suffragium curia. Acer cicuta cultura."
+          },
+          {
+            "id": "13",
+            "userId": 2,
+            "title": "Sortitus cohaero uredo est.",
+            "body": "Earum vero capto. Conspergo perspiciatis temperantia. Canto aspicio tamen. Annus impedit quam. Clamo alter aestus. Aeneus arx speculum."
+          },
+          {
+            "id": "14",
+            "userId": 2,
+            "title": "Distinctio depereo vito consequatur qui.",
+            "body": "Arcus complectus speciosus. Deserunt rem caries. Adamo valetudo ambulo."
+          },
+          {
+            "id": "15",
+            "userId": 2,
+            "title": "Tergeo cursus absconditus distinctio.",
+            "body": "Alienus condico triginta. Cunabula adversus armarium. Curis suffoco solum."
+          },
+          {
+            "id": "16",
+            "userId": 2,
+            "title": "Strues utpote territo adulatio.",
+            "body": "Denuo pectus cedo. Adnuo cohibeo balbus. Debeo accusantium suggero."
+          },
+          {
+            "id": "17",
+            "userId": 2,
+            "title": "Ipsam adultus sursum verbum.",
+            "body": "Ancilla ultra censura. Averto omnis non. Vehemens audeo strenuus. Cubitum ventosus curatio. Supplanto vaco ullam."
+          },
+          {
+            "id": "18",
+            "userId": 2,
+            "title": "Tibi assentator tempus credo una.",
+            "body": "Deinde delinquo claustrum. Venustas voluptatem ustulo. Cauda cursim error. Tamen possimus utrimque. Carmen crux centum."
+          }
+        ]
+  recorded_at: Thu, 07 Aug 2025 02:44:47 GMT
+- request:
+    method: get
+    uri: http://localhost:3011/comments?postId=9
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - tinyhttp
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, HEAD, PUT, PATCH, POST, DELETE
+      Access-Control-Allow-Headers:
+      - content-type
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 07 Aug 2025 02:44:47 GMT
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=5
+      Content-Length:
+      - '863'
+    body:
+      encoding: UTF-8
+      string: |-
+        [
+          {
+            "postId": 9,
+            "id": "46",
+            "name": "Animadverto adsum.",
+            "email": "kelley.erdman@runolfsdottir-bogan.test",
+            "body": "Temporibus nemo et. Aut rerum labore."
+          },
+          {
+            "postId": 9,
+            "id": "47",
+            "name": "Socius nemo.",
+            "email": "zada.ortiz@zulauf.test",
+            "body": "Et ipsam eveniet. Sunt quidem voluptatem."
+          },
+          {
+            "postId": 9,
+            "id": "48",
+            "name": "Pel arbor.",
+            "email": "corrie@thompson.test",
+            "body": "Vero nulla expedita. Aut alias fuga."
+          },
+          {
+            "postId": 9,
+            "id": "49",
+            "name": "Cupiditate auxilium.",
+            "email": "xavier@macejkovic-pouros.test",
+            "body": "Labore sequi voluptas. Eaque accusamus ea."
+          },
+          {
+            "postId": 9,
+            "id": "50",
+            "name": "Fugiat vallum.",
+            "email": "rebecca_rowe@gerlach.example",
+            "body": "Est aut deleniti. Inventore officiis itaque."
+          }
+        ]
+  recorded_at: Thu, 07 Aug 2025 02:44:47 GMT
+- request:
+    method: get
+    uri: http://localhost:3011/comments?postId=10
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - tinyhttp
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, HEAD, PUT, PATCH, POST, DELETE
+      Access-Control-Allow-Headers:
+      - content-type
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 07 Aug 2025 02:44:47 GMT
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=5
+      Content-Length:
+      - '321'
+    body:
+      encoding: UTF-8
+      string: |-
+        [
+          {
+            "postId": 10,
+            "id": "51",
+            "name": "Teres adaugeo.",
+            "email": "isidra@damore-hoppe.example",
+            "body": "Voluptas enim non. Fugiat ut sequi."
+          },
+          {
+            "postId": 10,
+            "id": "52",
+            "name": "Vir sunt.",
+            "email": "fredia@nitzsche.test",
+            "body": "Ea aut minus. Deserunt eum modi."
+          }
+        ]
+  recorded_at: Thu, 07 Aug 2025 02:44:47 GMT
+- request:
+    method: get
+    uri: http://localhost:3011/comments?postId=11
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - tinyhttp
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, HEAD, PUT, PATCH, POST, DELETE
+      Access-Control-Allow-Headers:
+      - content-type
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 07 Aug 2025 02:44:47 GMT
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=5
+      Content-Length:
+      - '496'
+    body:
+      encoding: UTF-8
+      string: |-
+        [
+          {
+            "postId": 11,
+            "id": "53",
+            "name": "Doloribus vacuus.",
+            "email": "lowell@lockman.example",
+            "body": "Et odio enim. Aut adipisci est."
+          },
+          {
+            "postId": 11,
+            "id": "54",
+            "name": "Adulatio cibus.",
+            "email": "houston.wiza@boyle-grimes.example",
+            "body": "Officia et ea. Quos aut ut."
+          },
+          {
+            "postId": 11,
+            "id": "55",
+            "name": "Cometes catena.",
+            "email": "jerrold@cartwright.test",
+            "body": "Culpa odit porro. Sit quae voluptatem."
+          }
+        ]
+  recorded_at: Thu, 07 Aug 2025 02:44:47 GMT
+- request:
+    method: get
+    uri: http://localhost:3011/comments?postId=12
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - tinyhttp
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, HEAD, PUT, PATCH, POST, DELETE
+      Access-Control-Allow-Headers:
+      - content-type
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 07 Aug 2025 02:44:47 GMT
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=5
+      Content-Length:
+      - '1420'
+    body:
+      encoding: UTF-8
+      string: |-
+        [
+          {
+            "postId": 12,
+            "id": "56",
+            "name": "Atque curso.",
+            "email": "kyla@hirthe.example",
+            "body": "Assumenda cupiditate perspiciatis. Doloribus ullam itaque."
+          },
+          {
+            "postId": 12,
+            "id": "57",
+            "name": "Virtus decumbo.",
+            "email": "pierre_stiedemann@hills.example",
+            "body": "Qui expedita laborum. Et excepturi aliquid."
+          },
+          {
+            "postId": 12,
+            "id": "58",
+            "name": "Ciminatio magni.",
+            "email": "everett.olson@schuppe.test",
+            "body": "In similique est. Et nesciunt dolor."
+          },
+          {
+            "postId": 12,
+            "id": "59",
+            "name": "Demonstro ventito.",
+            "email": "sabrina@sauer-heller.example",
+            "body": "Et repudiandae ea. Aut sit non."
+          },
+          {
+            "postId": 12,
+            "id": "60",
+            "name": "Cupiditate perspiciatis.",
+            "email": "bethel@dibbert.test",
+            "body": "Voluptatem id est. Hic et quos."
+          },
+          {
+            "postId": 12,
+            "id": "61",
+            "name": "Theologus spoliatio.",
+            "email": "juanita_johnston@kerluke-waters.example",
+            "body": "Beatae repudiandae quaerat. Praesentium nesciunt vitae."
+          },
+          {
+            "postId": 12,
+            "id": "62",
+            "name": "Vesper quaerat.",
+            "email": "miquel.douglas@gerlach-kutch.example",
+            "body": "Eaque et suscipit. Hic velit officia."
+          },
+          {
+            "postId": 12,
+            "id": "63",
+            "name": "Neque libero.",
+            "email": "elinore_howe@beatty-mills.example",
+            "body": "Numquam quidem error. Id alias eum."
+          }
+        ]
+  recorded_at: Thu, 07 Aug 2025 02:44:47 GMT
+- request:
+    method: get
+    uri: http://localhost:3011/comments?postId=13
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - tinyhttp
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, HEAD, PUT, PATCH, POST, DELETE
+      Access-Control-Allow-Headers:
+      - content-type
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 07 Aug 2025 02:44:47 GMT
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=5
+      Content-Length:
+      - '1197'
+    body:
+      encoding: UTF-8
+      string: |-
+        [
+          {
+            "postId": 13,
+            "id": "64",
+            "name": "Theatrum volup.",
+            "email": "woodrow@towne-bruen.test",
+            "body": "Et illo et. Sit numquam expedita."
+          },
+          {
+            "postId": 13,
+            "id": "65",
+            "name": "Asper aut.",
+            "email": "horacio@dicki.test",
+            "body": "Deserunt sed quisquam. Perspiciatis nostrum nobis."
+          },
+          {
+            "postId": 13,
+            "id": "66",
+            "name": "Corona veniam.",
+            "email": "cari.cartwright@legros.test",
+            "body": "Nulla quam et. Libero numquam ut."
+          },
+          {
+            "postId": 13,
+            "id": "67",
+            "name": "Cupressus credo.",
+            "email": "son.wyman@breitenberg-hamill.test",
+            "body": "Quos quasi vel. Molestiae eos a."
+          },
+          {
+            "postId": 13,
+            "id": "68",
+            "name": "Utroque inventore.",
+            "email": "lakeesha@hudson.example",
+            "body": "Voluptatem quas aut. Et minima eos."
+          },
+          {
+            "postId": 13,
+            "id": "69",
+            "name": "Arguo velum.",
+            "email": "major@crooks-jerde.test",
+            "body": "Impedit nihil animi. Consequatur itaque sed."
+          },
+          {
+            "postId": 13,
+            "id": "70",
+            "name": "Talus angulus.",
+            "email": "tammie.smith@gottlieb-oconnell.example",
+            "body": "Fuga molestiae quidem. Laudantium non numquam."
+          }
+        ]
+  recorded_at: Thu, 07 Aug 2025 02:44:47 GMT
+- request:
+    method: get
+    uri: http://localhost:3011/comments?postId=14
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - tinyhttp
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, HEAD, PUT, PATCH, POST, DELETE
+      Access-Control-Allow-Headers:
+      - content-type
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 07 Aug 2025 02:44:47 GMT
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=5
+      Content-Length:
+      - '1382'
+    body:
+      encoding: UTF-8
+      string: |-
+        [
+          {
+            "postId": 14,
+            "id": "71",
+            "name": "Aut voluptatibus.",
+            "email": "myrta@mccullough.test",
+            "body": "Praesentium vero tempore. Architecto et iste."
+          },
+          {
+            "postId": 14,
+            "id": "72",
+            "name": "Crebro amitto.",
+            "email": "azalee@langosh.example",
+            "body": "Sunt architecto tempora. Quam harum eveniet."
+          },
+          {
+            "postId": 14,
+            "id": "73",
+            "name": "Corporis ullam.",
+            "email": "deon.hand@heidenreich.test",
+            "body": "Perspiciatis occaecati unde. Quod non et."
+          },
+          {
+            "postId": 14,
+            "id": "74",
+            "name": "Attero peior.",
+            "email": "zena@luettgen-hodkiewicz.test",
+            "body": "Est voluptatem ducimus. At et cupiditate."
+          },
+          {
+            "postId": 14,
+            "id": "75",
+            "name": "Comminor una.",
+            "email": "estrella_bogan@hodkiewicz.example",
+            "body": "Non recusandae praesentium. Ducimus est ut."
+          },
+          {
+            "postId": 14,
+            "id": "76",
+            "name": "Suffragium magni.",
+            "email": "bart.schulist@prosacco.example",
+            "body": "Eum tenetur eos. Repellat voluptatem ducimus."
+          },
+          {
+            "postId": 14,
+            "id": "77",
+            "name": "Amplitudo altus.",
+            "email": "lilli@kutch.test",
+            "body": "Sed quod eum. Ducimus ipsum qui."
+          },
+          {
+            "postId": 14,
+            "id": "78",
+            "name": "Terga suscipit.",
+            "email": "nannie@kling-wunsch.test",
+            "body": "Id ipsam dolor. Dignissimos et mollitia."
+          }
+        ]
+  recorded_at: Thu, 07 Aug 2025 02:44:47 GMT
+- request:
+    method: get
+    uri: http://localhost:3011/comments?postId=15
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - tinyhttp
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, HEAD, PUT, PATCH, POST, DELETE
+      Access-Control-Allow-Headers:
+      - content-type
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 07 Aug 2025 02:44:47 GMT
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=5
+      Content-Length:
+      - '1442'
+    body:
+      encoding: UTF-8
+      string: |-
+        [
+          {
+            "postId": 15,
+            "id": "79",
+            "name": "Somniculosus nemo.",
+            "email": "alexis@hudson.example",
+            "body": "Ratione et fugiat. Facilis possimus iste."
+          },
+          {
+            "postId": 15,
+            "id": "80",
+            "name": "Viscus desparatus.",
+            "email": "kurt_rath@parisian.test",
+            "body": "Rerum voluptas minus. Quae vitae officiis."
+          },
+          {
+            "postId": 15,
+            "id": "81",
+            "name": "Succurro adicio.",
+            "email": "michelina_gutmann@schultz-weimann.example",
+            "body": "Necessitatibus libero aliquid. Ad voluptates nulla."
+          },
+          {
+            "postId": 15,
+            "id": "82",
+            "name": "Magnam casso.",
+            "email": "david_schowalter@kunde.test",
+            "body": "Quos est quis. Debitis laborum omnis."
+          },
+          {
+            "postId": 15,
+            "id": "83",
+            "name": "Acidus alter.",
+            "email": "tara@schamberger.example",
+            "body": "Molestiae quia reprehenderit. Rerum sequi quas."
+          },
+          {
+            "postId": 15,
+            "id": "84",
+            "name": "Copiose aranea.",
+            "email": "ruthe@mante.test",
+            "body": "Occaecati temporibus alias. Illo dignissimos quo."
+          },
+          {
+            "postId": 15,
+            "id": "85",
+            "name": "Nesciunt desolo.",
+            "email": "andrew_davis@willms-upton.test",
+            "body": "Est voluptatem sint. Architecto necessitatibus voluptatum."
+          },
+          {
+            "postId": 15,
+            "id": "86",
+            "name": "Cibus succurro.",
+            "email": "jazmine.bergstrom@sawayn-mohr.test",
+            "body": "Sed ut necessitatibus. Laboriosam nihil quidem."
+          }
+        ]
+  recorded_at: Thu, 07 Aug 2025 02:44:47 GMT
+- request:
+    method: get
+    uri: http://localhost:3011/comments?postId=16
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - tinyhttp
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, HEAD, PUT, PATCH, POST, DELETE
+      Access-Control-Allow-Headers:
+      - content-type
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 07 Aug 2025 02:44:47 GMT
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=5
+      Content-Length:
+      - '504'
+    body:
+      encoding: UTF-8
+      string: |-
+        [
+          {
+            "postId": 16,
+            "id": "87",
+            "name": "Tabgo culpo.",
+            "email": "trang.rath@kunze.test",
+            "body": "Quam sit et. Nihil impedit in."
+          },
+          {
+            "postId": 16,
+            "id": "88",
+            "name": "Benevolentia deludo.",
+            "email": "karie@stracke.example",
+            "body": "Sed iure culpa. A molestias quia."
+          },
+          {
+            "postId": 16,
+            "id": "89",
+            "name": "Vulgaris verumtamen.",
+            "email": "shirley@larson.example",
+            "body": "Deserunt exercitationem velit. Ipsa tempora magni."
+          }
+        ]
+  recorded_at: Thu, 07 Aug 2025 02:44:47 GMT
+- request:
+    method: get
+    uri: http://localhost:3011/comments?postId=17
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - tinyhttp
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, HEAD, PUT, PATCH, POST, DELETE
+      Access-Control-Allow-Headers:
+      - content-type
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 07 Aug 2025 02:44:47 GMT
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=5
+      Content-Length:
+      - '1410'
+    body:
+      encoding: UTF-8
+      string: |-
+        [
+          {
+            "postId": 17,
+            "id": "90",
+            "name": "Debeo claro.",
+            "email": "stefan@howell.test",
+            "body": "Laboriosam quos numquam. Nemo aut sed."
+          },
+          {
+            "postId": 17,
+            "id": "91",
+            "name": "Aer deripio.",
+            "email": "newton.anderson@stroman.test",
+            "body": "Rem ex quia. Consequatur minima maxime."
+          },
+          {
+            "postId": 17,
+            "id": "92",
+            "name": "Video delicate.",
+            "email": "phoebe@bergstrom-huels.test",
+            "body": "Nemo nostrum distinctio. Eum voluptas voluptas."
+          },
+          {
+            "postId": 17,
+            "id": "93",
+            "name": "Atrox et.",
+            "email": "hang_christiansen@pfannerstill.example",
+            "body": "Sed nihil in. Ullam suscipit sed."
+          },
+          {
+            "postId": 17,
+            "id": "94",
+            "name": "Adnuo avoco.",
+            "email": "jasper.fay@treutel-hessel.example",
+            "body": "Aspernatur consequatur earum. Dolor voluptatum est."
+          },
+          {
+            "postId": 17,
+            "id": "95",
+            "name": "Cotidie conforto.",
+            "email": "rueben.hudson@upton.example",
+            "body": "Nostrum eum occaecati. Beatae est quos."
+          },
+          {
+            "postId": 17,
+            "id": "96",
+            "name": "Rerum triduana.",
+            "email": "edelmira_vandervort@williamson.test",
+            "body": "Laudantium repellat quia. Voluptate qui veritatis."
+          },
+          {
+            "postId": 17,
+            "id": "97",
+            "name": "Cunae omnis.",
+            "email": "jamar@heathcote.example",
+            "body": "Expedita iusto enim. Accusantium dolore molestiae."
+          }
+        ]
+  recorded_at: Thu, 07 Aug 2025 02:44:47 GMT
+- request:
+    method: get
+    uri: http://localhost:3011/comments?postId=18
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - tinyhttp
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, HEAD, PUT, PATCH, POST, DELETE
+      Access-Control-Allow-Headers:
+      - content-type
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 07 Aug 2025 02:44:47 GMT
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=5
+      Content-Length:
+      - '706'
+    body:
+      encoding: UTF-8
+      string: |-
+        [
+          {
+            "postId": 18,
+            "id": "98",
+            "name": "Debilito velum.",
+            "email": "katherina_weissnat@lemke.example",
+            "body": "Magnam illo dolor. Quam doloribus voluptas."
+          },
+          {
+            "postId": 18,
+            "id": "99",
+            "name": "Vis pauci.",
+            "email": "forest.stehr@gorczany.test",
+            "body": "Qui soluta placeat. Voluptas laborum earum."
+          },
+          {
+            "postId": 18,
+            "id": "100",
+            "name": "Conatus vicinus.",
+            "email": "clarissa@cole.test",
+            "body": "Est cumque itaque. Quo incidunt exercitationem."
+          },
+          {
+            "postId": 18,
+            "id": "101",
+            "name": "Placeat toties.",
+            "email": "hal_reichert@koepp.example",
+            "body": "Impedit rerum nihil. Facilis dolores veritatis."
+          }
+        ]
+  recorded_at: Thu, 07 Aug 2025 02:44:47 GMT
+recorded_with: VCR 6.3.1

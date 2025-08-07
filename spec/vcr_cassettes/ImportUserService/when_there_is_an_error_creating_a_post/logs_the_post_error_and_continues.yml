@@ -1,0 +1,105 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://localhost:3011/posts?userId=3
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - tinyhttp
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, HEAD, PUT, PATCH, POST, DELETE
+      Access-Control-Allow-Headers:
+      - content-type
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 07 Aug 2025 02:44:47 GMT
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=5
+      Content-Length:
+      - '2169'
+    body:
+      encoding: UTF-8
+      string: |-
+        [
+          {
+            "id": "19",
+            "userId": 3,
+            "title": "Temperantia adulescens currus quia.",
+            "body": "Despecto cruciamentum numquam. Quis ara sit. Aspicio aegrotatio minus."
+          },
+          {
+            "id": "20",
+            "userId": 3,
+            "title": "Illum defero concedo.",
+            "body": "Accipio agnitio ratione. Turpis abundans voluptas. Spectaculum tamen quia. Commodo synagoga ullam."
+          },
+          {
+            "id": "21",
+            "userId": 3,
+            "title": "Consequatur fugiat coaegresco.",
+            "body": "Subvenio culpa despecto. Peior degero capitulus. Carus pectus magni."
+          },
+          {
+            "id": "22",
+            "userId": 3,
+            "title": "Turbo veritatis cibus sunt adipiscor.",
+            "body": "Decimus acidus acceptus. Ex tactus vesper. Casso vulgivagus temperantia. Rem ante cogito. Tabesco umerus temptatio. Deorsum bardus thorax."
+          },
+          {
+            "id": "23",
+            "userId": 3,
+            "title": "Chirographum vilitas vehemens impedit enim succedo.",
+            "body": "Aestivus ante bestia. Pauci accusantium ultra. Claustrum voluptas auditor. Magnam demergo ea. Temeritas vorago solvo. Adversus uter aeneus."
+          },
+          {
+            "id": "24",
+            "userId": 3,
+            "title": "Clarus urbanus curtus derideo desipio pecunia.",
+            "body": "Mollitia curriculum titulus. Agnitio volo qui. Studio turbo super. Adhuc tamisium aspernatur."
+          },
+          {
+            "id": "25",
+            "userId": 3,
+            "title": "Ambitus angelus celer molestiae vomer.",
+            "body": "Et video benigne. Sunt volubilis qui. Aer volup rem. Curto paens maiores. Sordeo attero sint."
+          },
+          {
+            "id": "26",
+            "userId": 3,
+            "title": "Arbitro virtus minus.",
+            "body": "Delinquo degero depono. Utroque alo nam. Comedo adeptio thesis. Conspergo facere deripio. Admitto adduco conduco. Veritatis aedificium quis."
+          },
+          {
+            "id": "27",
+            "userId": 3,
+            "title": "Theologus ipsa thalassinus et demitto barba.",
+            "body": "Cupio canto callide. Id conventus auctor. Accipio studio sollicito. Assumenda adfero validus."
+          },
+          {
+            "id": "28",
+            "userId": 3,
+            "title": "Crur volaticus antepono decipio audax.",
+            "body": "Uredo umbra contego. Similique viscus alii. Bibo ut theatrum. Capto voluptatem amitto. Agnosco depromo decipio. Cribro carus uberrime."
+          }
+        ]
+  recorded_at: Thu, 07 Aug 2025 02:44:47 GMT
+recorded_with: VCR 6.3.1
