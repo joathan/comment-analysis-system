@@ -63,8 +63,9 @@ end
 
 group :test do
   gem 'database_cleaner-active_record'
-  gem 'simplecov', require: false
   gem 'shoulda-matchers'
+  gem 'simplecov', require: false
+  gem 'vcr'
   gem 'webmock'
 end
 
