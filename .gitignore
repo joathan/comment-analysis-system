@@ -28,3 +28,5 @@
 .DS_Store
 coverage/
 .env
+tools/
+db.json
