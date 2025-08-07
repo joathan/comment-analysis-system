@@ -5,7 +5,7 @@ class CreateComments < ActiveRecord::Migration[5.2]
       t.string :name
       t.string :email
       t.text :body
-      t.string :state, default: "new"
+      t.string :state, default: :new
 
       t.timestamps
     end
