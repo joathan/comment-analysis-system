@@ -21,15 +21,35 @@ class CommentMetricsService
   end
 
   def average_length
-    Statistics.mean(lengths)
+    lens = lengths
+    return 0.0 if lens.empty?
+
+    Statistics.mean(lens)
   end
 
   def median_length
-    Statistics.median(lengths)
+    lens = lengths
+    return 0.0 if lens.empty?
+
+    Statistics.median(lens)
   end
 
   def stddev_length
-    Statistics.standard_deviation(lengths)
+    lens = lengths
+    return 0.0 if lens.empty?
+
+    Statistics.standard_deviation(lens)
+  end
+
+  def as_json(*)
+    {
+      approved_count: approved_count,
+      rejected_count: rejected_count,
+      approval_rate: approval_rate,
+      average_length: average_length,
+      median_length: median_length,
+      stddev_length: stddev_length,
+    }
   end
 
   private
@@ -48,6 +68,6 @@ class CommentMetricsService
              else
                @comments.map(&:body)
              end
-    bodies.map { |b| b.to_s.length }
+    bodies.map { |b| b&.length || 0 }
   end
 end
