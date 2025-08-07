@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :analyze, only: [:create]
+      get 'analyze/:username', to: 'analyze#show'
       get 'progress/:job_id', to: 'progress#show'
     end
   end
