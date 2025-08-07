@@ -72,4 +72,10 @@ RSpec.describe ProcessCommentJob, type: :job do
 
     described_class.perform_now(comment.id)
   end
+
+  it 'does nothing if comment is not found' do
+    non_existent_id = Comment.maximum(:id).to_i + 1
+
+    expect { described_class.perform_now(non_existent_id) }.to raise_error(ActiveRecord::RecordNotFound)
+  end
 end

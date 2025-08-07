@@ -18,6 +18,9 @@ class ProcessCommentJob < ApplicationJob
       else
         comment.reject!
       end
+
+      MetricsCacheService.new.invalidate_user(comment.post.user)
+      MetricsCacheService.new.invalidate_group
     end
   end
 end
