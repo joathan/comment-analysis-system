@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :comment do
     name { Faker::Name.name }
     email { Faker::Internet.email }
-    body { 'MyString' }
+    body { Faker::Lorem.sentence }
     state { :new }
     association :post
   end
