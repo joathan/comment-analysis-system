@@ -4,14 +4,14 @@ require 'rails_helper'
 
 RSpec.describe Keyword, type: :model do
   describe 'validations' do
-    it { should validate_presence_of(:word) }
-    it { should validate_uniqueness_of(:word) }
+    it { should validate_presence_of(:term) }
+    it { should validate_uniqueness_of(:term) }
   end
 
   describe '.approved?' do
     before do
-      described_class.create!(word: 'ruby')
-      described_class.create!(word: 'rails')
+      described_class.create!(term: 'ruby')
+      described_class.create!(term: 'rails')
     end
 
     it 'approves when 2 keywords present' do

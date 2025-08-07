@@ -1,0 +1,5 @@
+<h1><%= action_name == "new" ? "Nova" : "Editar" %> Keyword</h1>
+
+<%= render "form", keyword: @keyword %>
+
+<%= link_to "Voltar", keywords_path %>

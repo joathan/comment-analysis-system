@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Keyword < ApplicationRecord
-  validates :word, presence: true, uniqueness: true
+  validates :term, presence: true, uniqueness: true
 
   after_commit :enqueue_reprocessing_for_all_users
 
@@ -9,20 +9,21 @@ class Keyword < ApplicationRecord
   def self.approved?(text)
     return false if text.blank?
 
-    keywords = all.pluck(:word).map(&:downcase)
+    keywords = all.pluck(:term).map(&:downcase)
     downcased_text = text.downcase
 
-    matches = keywords.count { |word| downcased_text.include?(word) }
+    matches = keywords.count { |term| downcased_text.include?(term) }
     matches >= 2
   end
 
   private
 
   def enqueue_reprocessing_for_all_users
-    user_ids = User.joins(posts: :comments).distinct.pluck(:id)
-
-    user_ids.find_each do |user_id|
-      ReprocessUserJob.perform_later(user_id: user_id)
+    User.joins(posts: :comments)
+        .distinct
+        .select(:id)
+        .find_each(batch_size: 1000) do |user|
+      ReprocessUserJob.perform_later(user_id: user.id)
     end
   end
 end
