@@ -4,4 +4,11 @@ require 'sidekiq/web'
 
 Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
+
+  namespace :api do
+    namespace :v1 do
+      resources :analyze, only: [:create]
+      get 'progress/:job_id', to: 'progress#show'
+    end
+  end
 end
