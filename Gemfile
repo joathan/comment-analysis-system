@@ -41,12 +41,14 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'aasm'
 gem 'sidekiq'
+gem 'net-http'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'pry-rails'
   gem 'rspec-rails'
 end
 
@@ -61,6 +63,7 @@ end
 
 group :test do
   gem 'database_cleaner-active_record'
+  gem 'simplecov', require: false
   gem 'shoulda-matchers'
   gem 'webmock'
 end
