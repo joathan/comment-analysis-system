@@ -48,4 +48,6 @@ Rails.application.configure do
   config.log_level = :debug
   config.logger = Rails.logger
   config.active_record.verbose_query_logs = true
+  config.x.json_api.base_url = ENV.fetch('JSON_API_URL_INTERNAL', 'http://jsonserver:6000')
+  config.x.translate.base_url = ENV.fetch('TRANSLATE_API_URL_INTERNAL', 'http://libretranslate:5000')
 end

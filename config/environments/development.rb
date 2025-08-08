@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
+  config.hosts << /.*\.lvh\.me/ if config.respond_to?(:hosts)
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
@@ -61,4 +65,6 @@ Rails.application.configure do
 
   config.active_job.queue_adapter = :sidekiq
   config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
+  config.x.json_api.base_url = ENV.fetch('JSON_API_URL_INTERNAL', 'http://jsonserver:6000')
+  config.x.translate.base_url = ENV.fetch('TRANSLATE_API_URL_INTERNAL', 'http://libretranslate:5000')
 end
