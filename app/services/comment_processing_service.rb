@@ -28,9 +28,7 @@ class CommentProcessingService
   private
 
   def translated
-    @logger.info("Translating comment_id=#{@comment.id} to #{@target_language}")
     translated = @translation_service.translate(@comment.body, target: @target_language)
-    @logger.info("Translation successful for comment_id=#{@comment.id}: #{translated}")
     @comment.update!(translated_body: translated.presence || @comment.body)
   rescue TranslationService::Error => e
     @logger.warn("Translation failed: #{e.message}")
