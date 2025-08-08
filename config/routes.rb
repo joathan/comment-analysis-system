@@ -4,6 +4,8 @@ require 'sidekiq/web'
 
 Rails.application.routes.draw do
   resources :keywords
+  root 'statistics#index'
+
   mount Sidekiq::Web => '/sidekiq'
 
   namespace :api do
