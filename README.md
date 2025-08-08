@@ -192,3 +192,52 @@ As seguintes funcionalidades foram adicionadas para aprimorar o projeto, indo al
   * Iniciar a análise de um usuário diretamente pela UI.
   * Listar todos os posts e comentários com seus respectivos status.
 * **Feedback de Progresso em Tempo Real:** Implementação de JavaScript para fazer polling no endpoint de progresso e exibir o status da análise em tempo real na interface, com notificações que se transformam e desaparecem automaticamente.
+
+## Setup e Desenvolvimento com Docker
+
+Este projeto é totalmente containerizado usando Docker e Docker Compose, e inclui um `Makefile` para simplificar os comandos comuns.
+
+### Pré-requisitos
+
+* [Docker](https://docs.docker.com/get-docker/)
+* [Docker Compose](https://docs.docker.com/compose/install/)
+
+### Setup Inicial
+
+Para configurar o ambiente de desenvolvimento pela primeira vez, siga estes passos:
+
+1. **Clone o repositório:**
+
+   ```sh
+   git clone <URL_DO_REPOSITORIO>
+   cd <NOME_DO_PROJETO>
+   ```
+
+2. **Execute o comando de setup:**
+    Este comando irá construir as imagens Docker, criar o banco de dados, rodar as migrações e executar a suíte de testes para garantir que tudo está funcionando corretamente.
+
+    ```sh
+    make setup
+    ```
+
+3. **Inicie os serviços:**
+    Após o setup, inicie todos os serviços em segundo plano.
+
+    ```sh
+    make up
+    ```
+
+A aplicação estará acessível em `http://localhost`. A interface do Sidekiq estará em `http://localhost/sidekiq`.
+
+### Comandos Úteis do Makefile
+
+* `make up`: Inicia todos os serviços em segundo plano.
+* `make down`: Para todos os serviços.
+* `make restart`: Reinicia todos os serviços.
+* `make build`: Reconstrói as imagens Docker se houver alguma alteração nos `Dockerfiles`.
+* `make test`: Executa a suíte de testes (RSpec).
+* `make bash`: Abre um terminal interativo (`bash`) dentro do container da aplicação web.
+* `make console`: Abre um console do Rails (`rails c`).
+* `make db-migrate`: Roda as migrações pendentes do banco de dados.
+* `make logs`: Exibe os logs de todos os serviços em tempo real.
+* `make clean`: Para e remove todos os containers, volumes e redes associados ao projeto. **Use com cuidado, pois isso removerá os dados do seu banco de dados.**
