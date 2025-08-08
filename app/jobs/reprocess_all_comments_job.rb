@@ -4,6 +4,8 @@ class ReprocessAllCommentsJob < ApplicationJob
   queue_as :critical
 
   def perform
-    ReprocessAllCommentsService.new.call
+    User.find_each do |user|
+      ReprocessUserJob.perform_later(user_id: user.id)
+    end
   end
 end
