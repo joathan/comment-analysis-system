@@ -16,8 +16,7 @@ keywords = %w[
   clean
   architecture
   documentation
-  testing
-  tests
+  testes
   service
   services
 ]
