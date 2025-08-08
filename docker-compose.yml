@@ -25,7 +25,7 @@ services:
     ports:
       - "5001:5000"
     environment:
-      LT_LOAD_ONLY: en,pt
+      LT_LOAD_ONLY: en,pt,pb
       LT_UPDATE_MODELS: "false"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:5000/health"]
