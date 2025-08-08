@@ -3,11 +3,16 @@
 class ImportUserService
   def initialize(username:)
     @username = username
+    @translation_service = TranslationService.new
   end
 
   def call
     user = find_or_create_user
+    return unless user
+
     import_posts(user)
+    import_comments(user)
+
     ReprocessUserJob.perform_later(user_id: user.id)
   end
 
@@ -15,6 +20,12 @@ class ImportUserService
 
   def find_or_create_user
     data = JsonPlaceholderAdapter.fetch_user(@username)
+
+    unless data
+      Rails.logger.warn("ImportUserService: Nenhum dado retornado para o username #{@username.inspect}")
+      return nil
+    end
+
     User.find_or_create_by!(external_id: data['id']) do |user|
       user.username = data['username']
       user.name = data['name']
@@ -24,22 +35,26 @@ class ImportUserService
 
   def import_posts(user)
     JsonPlaceholderAdapter.fetch_user_posts(user.external_id).each do |post_data|
-      post = Post.find_or_create_by!(external_id: post_data['id']) do |p|
-        p.user = user
-        p.title = post_data['title']
-        p.body = post_data['body']
+      Post.find_or_create_by!(external_id: post_data['id']) do |post|
+        post.user = user
+        post.title = post_data['title']
+        post.body = post_data['body']
       end
-
-      import_comments(post)
     end
   end
 
-  def import_comments(post)
-    JsonPlaceholderAdapter.fetch_post_comments(post.external_id).each do |comment_data|
-      Comment.find_or_create_by!(external_id: comment_data['id']) do |c|
-        c.post = post
-        c.email = comment_data['email']
-        c.body = comment_data['body']
+  def import_comments(user)
+    user.posts.each do |post|
+      JsonPlaceholderAdapter.fetch_post_comments(post.external_id).each do |comment_data|
+        next if Comment.exists?(external_id: comment_data['id'])
+
+        post.comments.create!(
+          external_id: comment_data['id'],
+          name: comment_data['name'],
+          email: comment_data['email'],
+          body: comment_data['body'],
+          translated_body: @translation_service.translate(comment_data['body'])
+        )
       end
     end
   end
