@@ -216,9 +216,13 @@ Para configurar o ambiente de desenvolvimento pela primeira vez, siga estes pass
 
 4. **Acesse a aplicação:**
    A aplicação estará acessível em `http://app.lvh.me`.
+
    A interface do Sidekiq estará em `http://app.lvh.me/sidekiq`.
+
    A API estará em `http://app.lvh.me/api/v1`.
+
    A JsonPlaceholder API estará em `http://app.lvh.me/external/json`.
+
    A API de Tradução estará em `http://app.lvh.me/external/translate`.
 
 ### Comandos Úteis do Makefile
