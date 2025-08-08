@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class JsonPlaceholderAdapter
-  BASE_URL = 'http://localhost:3011'
+  BASE_URL = Rails.configuration.x.json_api.base_url
 
   class << self
     def fetch_user(username)
