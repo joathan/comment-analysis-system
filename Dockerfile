@@ -8,11 +8,21 @@ ENV RAILS_ENV=development \
   BUNDLE_FORCE_RUBY_PLATFORM=1 \
   BUNDLER_VERSION=2.4.22
 
+ARG BUNDLE_WITHOUT=""
+ENV BUNDLE_WITHOUT=$BUNDLE_WITHOUT
+
 RUN apt-get update -y && \
   apt-get install -y --no-install-recommends \
-  build-essential git curl ca-certificates \
-  libpq-dev pkg-config libffi-dev \
-  nodejs npm tini \
+  build-essential \
+  git \
+  curl \
+  ca-certificates \
+  libpq-dev \
+  pkg-config \
+  libffi-dev \
+  nodejs \
+  npm \
+  tini \
   && npm install --global yarn@1 \
   && rm -rf /var/lib/apt/lists/*
 
@@ -22,7 +32,7 @@ RUN gem update --system 3.4.22 && \
 WORKDIR /app
 
 COPY Gemfile Gemfile.lock ./
-RUN bundle config set without 'test' && \
+RUN bundle config set without "$BUNDLE_WITHOUT" && \
   bundle config set force_ruby_platform true && \
   bundle install
 

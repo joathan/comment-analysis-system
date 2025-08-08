@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :posts, only: [:index] do
     resources :comments, only: [:index]
   end
+  get 'healthcheck', to: 'application#healthcheck'
   root 'statistics#index'
 
   mount Sidekiq::Web => '/sidekiq'

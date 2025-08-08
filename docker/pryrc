@@ -1,0 +1,11 @@
+if defined?(Pry)
+  history = Pry.config.history
+
+  # caminho do histórico
+  history.file = '/history/.pry_history' if history.respond_to?(:file=)
+
+  # liga salvar/carregar se a versão suportar
+  history.should_save = true if history.respond_to?(:should_save=)
+  history.should_load = true if history.respond_to?(:should_load=)
+  history.save_interval = 1 if history.respond_to?(:save_interval=)
+end

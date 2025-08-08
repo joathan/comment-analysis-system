@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+mkdir -p /history
+touch /history/.bash_history /history/.irb_history /history/.pry_history || true
+
 rm -f /app/tmp/pids/server.pid || true
 
 if [ -f /app/package.json ] && [ "${SKIP_JS_INSTALL:-0}" != "1" ]; then

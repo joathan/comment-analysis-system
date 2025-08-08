@@ -36,6 +36,7 @@ services:
       start_period: 60s
 
   jsonserver:
+    platform: linux/amd64
     build:
       context: ./docker/json-server
     volumes:
@@ -61,12 +62,22 @@ services:
 
   web:
     platform: linux/amd64
+    tty: true
+    stdin_open: true
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        BUNDLE_WITHOUT: ""
     image: comment-analysis-system:web
     command: bundle exec rails server -b 0.0.0.0 -p 3000
     environment:
+      HISTFILE: /history/.bash_history
+      HISTSIZE: "1000000"
+      HISTFILESIZE: "1000000"
+      PROMPT_COMMAND: 'history -a; history -n;'
+      IRBRC: /app/docker/irbrc
+      PRYRC: /app/docker/pryrc
       RAILS_ENV: development
       REDIS_URL: redis://redis:6379/0
       POSTGRES_USER: postgres
@@ -76,17 +87,32 @@ services:
     volumes:
       - .:/app:cached
       - bundle:/gems
+      - ./.local/history:/history
     depends_on:
       db: { condition: service_healthy }
       redis: { condition: service_started }
       jsonserver: { condition: service_started }
       libretranslate: { condition: service_started }
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s 
 
   sidekiq:
     platform: linux/amd64
+    tty: true
+    stdin_open: true
     image: comment-analysis-system:web
     command: bundle exec sidekiq -C config/sidekiq.yml
     environment:
+      HISTFILE: /history/.bash_history
+      HISTSIZE: "100000"
+      HISTFILESIZE: "100000"
+      PROMPT_COMMAND: 'history -a; history -n;'
+      IRBRC: /app/docker/irbrc
+      PRYRC: /app/docker/pryrc
       RAILS_ENV: development
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -96,15 +122,14 @@ services:
     volumes:
       - .:/app:cached
       - bundle:/gems
+      - ./.local/history:/history
     depends_on:
+      web:
+        condition: service_healthy
       db:
         condition: service_healthy
       redis:
         condition: service_started
-      jsonserver:
-        condition: service_healthy
-      libretranslate:
-        condition: service_healthy
 
   nginx:
     platform: linux/amd64
@@ -120,6 +145,7 @@ services:
 
   # roda sob demanda com: docker compose run --rm seed_json
   seed_json:
+    profiles: ["tools"]
     platform: linux/amd64
     build:
       context: .
@@ -151,3 +177,4 @@ volumes:
   redis_data:
   libretranslate_data:
   json_data:
+  dev_history:
