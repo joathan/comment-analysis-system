@@ -7,23 +7,17 @@ class Keyword < ApplicationRecord
 
   # TODO: Melhorar performance usando redis
   def self.approved?(text)
-    return false if text.blank?
+    return if text.blank?
 
-    keywords = all.pluck(:term).map(&:downcase)
-    downcased_text = text.downcase
+    keywords = Keyword.pluck(:term)
 
-    matches = keywords.count { |term| downcased_text.include?(term) }
-    matches >= 2
+    matching_keywords = keywords.count { |keyword| text.downcase.include?(keyword.downcase) }
+    matching_keywords >= 2
   end
 
   private
 
   def enqueue_reprocessing_for_all_users
-    User.joins(posts: :comments)
-        .distinct
-        .select(:id)
-        .find_each(batch_size: 1000) do |user|
-      ReprocessUserJob.perform_later(user_id: user.id)
-    end
+    ReprocessAllCommentsJob.perform_later
   end
 end
