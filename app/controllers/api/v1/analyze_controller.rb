@@ -2,17 +2,23 @@
 
 module Api
   module V1
-    class AnalyzeController < ApplicationController
+    class AnalyzeController < Api::V1::BaseController
       before_action :load_user, only: [:show]
 
       def create
         username = params[:username]
 
-        render json: { error: 'username is required' }, status: :unprocessable_entity and return if username.blank?
+        if username.blank?
+          render json: { error: 'username is required' }, status: :unprocessable_entity
+          return
+        end
 
         job = ImportUserJob.perform_later(username: username)
 
         render json: { job_id: job.job_id, status: 'queued' }, status: :accepted
+      rescue StandardError => e
+        Rails.logger.error("Error enqueuing ImportUserJob: #{e.message}")
+        render json: { error: 'Internal server error' }, status: :internal_server_error
       end
 
       def show
