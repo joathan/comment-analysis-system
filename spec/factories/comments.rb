@@ -6,7 +6,7 @@ FactoryBot.define do
     email { Faker::Internet.email }
     body { Faker::Lorem.sentence }
     state { :new }
-    external_id { rand(1..1000) }
+    sequence(:external_id) { |n| n }
     association :post
   end
 

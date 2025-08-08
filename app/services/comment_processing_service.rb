@@ -30,7 +30,7 @@ class CommentProcessingService
   def translated
     translated = @translation_service.translate(@comment.body, target: @target_language)
     @comment.update!(translated_body: translated.presence || @comment.body)
-  rescue TranslationService::Error => e
+  rescue StandardError => e
     @logger.warn("Translation failed: #{e.message}")
     @comment.update!(translated_body: @comment.body)
   end

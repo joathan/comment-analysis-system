@@ -5,6 +5,6 @@ FactoryBot.define do
     username { Faker::Internet.unique.username }
     email { Faker::Internet.unique.email }
     name { Faker::Name.name }
-    external_id { rand(1..1000) }
+    sequence(:external_id) { |n| n }
   end
 end

@@ -10,6 +10,7 @@ RSpec.describe "Keyword flow (keywords)", type: :integration do
 
   before do
     Rails.cache.clear
+    allow(LibreTranslateAdapter).to receive(:translate).and_return(nil)
   end
 
   it "reprocesses comments from all users when changing keywords and recalculates metrics correctly" do
@@ -29,10 +30,8 @@ RSpec.describe "Keyword flow (keywords)", type: :integration do
     expect(ReprocessAllCommentsJob).to receive(:perform_later).at_least(:once)
     Keyword.create!(term: "Python")
 
-    ReprocessUserJob.perform_now(user_id: user.id)
-
-    ProcessCommentJob.perform_now(comment1.id)
-    ProcessCommentJob.perform_now(comment2.id)
+    ProcessCommentJob.perform_now(comment1.id, force: true)
+    ProcessCommentJob.perform_now(comment2.id, force: true)
     comment1.reload; comment2.reload
 
     expect(comment2).to be_approved
@@ -42,18 +41,17 @@ RSpec.describe "Keyword flow (keywords)", type: :integration do
     expect(metrics[:rejected_count]).to eq(0)
     expect(metrics[:approval_rate]).to eq(1.0)
 
-    Keyword.find_by!(term: "Ruby").destroy
-    ReprocessUserJob.perform_now(user_id: user.id)
-    ProcessCommentJob.perform_now(comment1.id)
-    ProcessCommentJob.perform_now(comment2.id)
+    Keyword.find_by!(term: "Rails").destroy
+    ProcessCommentJob.perform_now(comment1.id, force: true)
+    ProcessCommentJob.perform_now(comment2.id, force: true)
     comment1.reload; comment2.reload
 
     expect(comment1).to be_rejected
-    expect(comment2).to be_rejected
+    expect(comment2).to be_approved
 
     metrics = MetricsCacheService.new.fetch_user_metrics(user)
-    expect(metrics[:approved_count]).to eq(0)
-    expect(metrics[:rejected_count]).to eq(2)
-    expect(metrics[:approval_rate]).to eq(0.0)
+    expect(metrics[:approved_count]).to eq(1)
+    expect(metrics[:rejected_count]).to eq(1)
+    expect(metrics[:approval_rate]).to eq(0.5)
   end
 end

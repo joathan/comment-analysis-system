@@ -94,7 +94,8 @@ RSpec.describe CommentMetricsService do
       create(:comment, body: 'baz buzz word', state: :approved)
       create(:comment, body: 'nope', state: :rejected)
       create(:comment, body: 'waiting...', state: :new)
-      create(:comment, body: nil)
+      c = create(:comment)
+      c.update_column(:body, nil)
 
       metrics = described_class.new(Comment.all)
 

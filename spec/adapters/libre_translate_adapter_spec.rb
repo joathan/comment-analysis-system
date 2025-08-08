@@ -2,15 +2,19 @@
 
 require 'rails_helper'
 
-RSpec.describe LibreTranslateAdapter, :vcr do
+RSpec.describe LibreTranslateAdapter do
   describe '.translate' do
     context 'when the request succeeds' do
       it 'returns the translated text' do
         original = 'Hello, how are you?'
+        response = instance_double(HTTParty::Response,
+                                  success?: true,
+                                  parsed_response: { 'translatedText' => 'Olá, como você está?' },
+                                  body: '{"translatedText":"Olá, como você está?"}')
+        allow(HTTParty).to receive(:post).and_return(response)
+    
         translated = described_class.translate(original, source: 'en', target: 'pt-BR')
-
-        expect(translated).to be_a(String)
-        expect(translated.downcase).to match(/olá|tudo bem|como você está/)
+        expect(translated).to eq('Olá, como você está?')
       end
     end
 

@@ -5,6 +5,6 @@ FactoryBot.define do
     user
     title { Faker::Lorem.sentence }
     body  { Faker::Lorem.paragraph }
-    external_id { rand(1..1000) } 
+    sequence(:external_id) { |n| n }
   end
 end

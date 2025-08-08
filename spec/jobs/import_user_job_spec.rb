@@ -18,7 +18,7 @@ RSpec.describe ImportUserJob, type: :job do
   describe '#perform' do
     it 'calls ImportUserService with the correct username' do
       service_instance = instance_double(ImportUserService)
-      expect(ImportUserService).to receive(:new).with(username).and_return(service_instance)
+      expect(ImportUserService).to receive(:new).with(username: username).and_return(service_instance)
       expect(service_instance).to receive(:call)
 
       described_class.new.perform(username: username)

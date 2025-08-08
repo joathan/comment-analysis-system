@@ -20,7 +20,7 @@ class ImportUserService
     data = JsonPlaceholderAdapter.fetch_user(@username)
 
     unless data
-      Rails.logger.warn("ImportUserService: Nenhum dado retornado para o username #{@username.inspect}")
+      Rails.logger.warn("[ImportUserService] Nenhum dado retornado para o username #{@username.inspect}")
       return nil
     end
 
@@ -32,18 +32,23 @@ class ImportUserService
   end
 
   def import_posts(user)
-    JsonPlaceholderAdapter.fetch_user_posts(user.external_id).each do |post_data|
+    posts_data = JsonPlaceholderAdapter.fetch_user_posts(user.external_id)
+    posts_data.each do |post_data|
       Post.find_or_create_by!(external_id: post_data['id']) do |post|
         post.user = user
         post.title = post_data['title']
         post.body = post_data['body']
       end
+    rescue StandardError => e
+      Rails.logger.error("[ImportUserService] Falha ao criar post #{post_data["id"]}: #{e.message}")
+      next
     end
   end
 
   def import_comments(user)
     user.posts.find_each do |post|
-      JsonPlaceholderAdapter.fetch_post_comments(post.external_id).each do |comment_data|
+      comments_data = JsonPlaceholderAdapter.fetch_post_comments(post.external_id)
+      comments_data.each do |comment_data|
         next if Comment.exists?(external_id: comment_data['id'])
 
         comment = post.comments.create!(
@@ -54,6 +59,9 @@ class ImportUserService
         )
 
         ProcessCommentJob.perform_later(comment.id)
+      rescue StandardError => e
+        Rails.logger.error("[ImportUserService] Falha ao criar comentário para o post #{post.external_id}: #{e.message}")
+        next
       end
     end
   end

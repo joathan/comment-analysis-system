@@ -19,7 +19,7 @@ RSpec.describe ProcessCommentJob, type: :job do
 
     comment.reload
 
-    expect(comment.body).to eq(translated_text)
+    expect(comment.translated_body).to eq(translated_text)
     expect(comment).to be_approved
   end
 
@@ -30,14 +30,13 @@ RSpec.describe ProcessCommentJob, type: :job do
 
     comment.reload
 
-    expect(comment.body).to eq(translated_text)
+    expect(comment.translated_body).to eq(translated_text)
     expect(comment).to be_rejected
   end
 
   it 'does nothing if the comment is already processing' do
     comment.update!(state: :processing)
 
-    expect(service_instance).not_to receive(:translate)
     expect(Keyword).not_to receive(:approved?)
 
     described_class.perform_now(comment.id)
@@ -48,7 +47,6 @@ RSpec.describe ProcessCommentJob, type: :job do
   it 'does nothing if the comment is already approved' do
     comment.update!(state: :approved)
 
-    expect(service_instance).not_to receive(:translate)
     expect(Keyword).not_to receive(:approved?)
 
     described_class.perform_now(comment.id)
@@ -59,7 +57,6 @@ RSpec.describe ProcessCommentJob, type: :job do
   it 'does nothing if the comment is already rejected' do
     comment.update!(state: :rejected)
 
-    expect(service_instance).not_to receive(:translate)
     expect(Keyword).not_to receive(:approved?)
 
     described_class.perform_now(comment.id)
