@@ -2,8 +2,8 @@
 COMPOSE = docker compose
 
 # Target to set up the entire application from scratch
-# Builds images, creates the DB, runs migrations, and then runs tests.
-setup: build db-create db-migrate test
+# Builds images, creates the DB, runs migrations, runs tests, and flushes redis.
+setup: build db-create db-migrate test redis-flush
 
 # Build or rebuild the docker images
 build:
@@ -42,6 +42,11 @@ db-seed:
 test:
 	@echo "Running RSpec test suite..."
 	$(COMPOSE) run --rm web bundle exec rspec
+
+# Flush the Redis cache
+redis-flush:
+	@echo "Flushing Redis cache..."
+	@$(COMPOSE) exec redis redis-cli FLUSHALL || echo "Redis container not running or not ready, skipping flush."
 
 # Open a bash shell inside the web container
 bash:
