@@ -45,11 +45,13 @@ env-setup: ## Cria o arquivo .env a partir do .env.example, se não existir.
 	fi
 
 db-json: ## Cria o banco de dados do arquivo db.json.
-	@if [ -f ./docker/json-server/db.json ]; then \
+	@if [ -f docker/json-server/db.json ]; then \
 		echo "Arquivo db.json encontrado. Criando o banco de dados..."; \
 		$(COMPOSE) run --rm seed_json; \
 	else \
-		echo "Arquivo db.json não encontrado. Certifique-se de que o servidor JSON está em execução."; \
+		echo "Arquivo db.json não encontrado. Criando..."; \
+		touch docker/json-server/db.json; \
+		$(COMPOSE) run --rm seed_json; \
 	fi
 
 db-create: ## Cria o banco de dados.
