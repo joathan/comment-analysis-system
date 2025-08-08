@@ -45,4 +45,7 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
   config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] || 'redis://localhost:6379/0' }
   config.active_job.queue_adapter = :test
+  config.log_level = :debug
+  config.logger = Rails.logger
+  config.active_record.verbose_query_logs = true
 end
