@@ -3,17 +3,15 @@
 class ImportUserService
   def initialize(username:)
     @username = username
-    @translation_service = TranslationService.new
   end
 
   def call
     user = find_or_create_user
+
     return unless user
 
     import_posts(user)
     import_comments(user)
-
-    ReprocessUserJob.perform_later(user_id: user.id)
   end
 
   private
@@ -44,17 +42,18 @@ class ImportUserService
   end
 
   def import_comments(user)
-    user.posts.each do |post|
+    user.posts.find_each do |post|
       JsonPlaceholderAdapter.fetch_post_comments(post.external_id).each do |comment_data|
         next if Comment.exists?(external_id: comment_data['id'])
 
-        post.comments.create!(
+        comment = post.comments.create!(
           external_id: comment_data['id'],
           name: comment_data['name'],
           email: comment_data['email'],
-          body: comment_data['body'],
-          translated_body: @translation_service.translate(comment_data['body'])
+          body: comment_data['body']
         )
+
+        ProcessCommentJob.perform_later(comment.id)
       end
     end
   end

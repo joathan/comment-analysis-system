@@ -6,7 +6,6 @@ class Comment < ApplicationRecord
   belongs_to :post
 
   validates :body, presence: true
-  validates :translated_body, presence: true
 
   aasm column: :state do
     state :new, initial: true

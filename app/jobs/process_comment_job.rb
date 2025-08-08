@@ -7,8 +7,5 @@ class ProcessCommentJob < ApplicationJob
     comment = Comment.find(comment_id)
 
     CommentProcessingService.new(comment).call
-
-    MetricsCacheService.new.invalidate_user(comment.post.user)
-    MetricsCacheService.new.invalidate_group
   end
 end
