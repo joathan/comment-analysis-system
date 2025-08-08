@@ -40,7 +40,7 @@ gem 'redis', '~> 4.0'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'aasm'
-gem 'sidekiq'
+gem 'sidekiq', '~> 6.5', '>= 6.5.12'
 gem 'net-http'
 
 group :development, :test do
