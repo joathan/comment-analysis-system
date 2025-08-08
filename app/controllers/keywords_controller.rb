@@ -16,7 +16,8 @@ class KeywordsController < ApplicationController
   def create
     @keyword = Keyword.new(keyword_params)
     if @keyword.save
-      redirect_to @keyword, notice: 'Keyword criada com sucesso.'
+      flash[:notice] = 'Keyword criada. O reprocessamento de todos os comentários foi iniciado em segundo plano.'
+      redirect_to keywords_path
     else
       render :new
     end
@@ -26,7 +27,9 @@ class KeywordsController < ApplicationController
 
   def update
     if @keyword.update(keyword_params)
-      redirect_to @keyword, notice: 'Keyword atualizada com sucesso.'
+      flash[:notice] = 'Keyword atualizada. O reprocessamento de todos os comentários foi iniciado em segundo plano.'
+
+      redirect_to keywords_path
     else
       render :edit
     end
@@ -34,7 +37,9 @@ class KeywordsController < ApplicationController
 
   def destroy
     @keyword.destroy
-    redirect_to keywords_path, notice: 'Keyword removida com sucesso.'
+    flash[:notice] = 'Keyword removida. O reprocessamento de todos os comentários foi iniciado em segundo plano.'
+
+    redirect_to keywords_path
   end
 
   private

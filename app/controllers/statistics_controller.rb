@@ -2,14 +2,16 @@
 
 class StatisticsController < ApplicationController
   def index
-    @user_metrics = User.includes(posts: :comments).map do |user|
+    cache_service = MetricsCacheService.new
+
+    @user_metrics = User.order(:username).map do |user|
       {
         user: user,
-        metrics: CommentMetricsService.new(user.comments).as_json,
+        metrics: cache_service.fetch_user_metrics(user),
       }
     end
 
-    @group_metrics = GroupMetricsService.calculate
+    @group_metrics = cache_service.fetch_group_metrics
     @keywords = Keyword.order(:term)
   end
 end

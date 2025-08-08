@@ -18,13 +18,17 @@
         <% flash.each do |type, msg| %>
           <% next if type.to_s == 'job_id' %>
           <% 
-            alert_class = (type.to_s == 'notice') ? 'alert-info' : 'alert-error'
+            alert_class = if type.to_s == 'notice' && flash[:job_id]
+                            'alert-info'
+                          elsif type.to_s == 'notice'
+                            'alert-success'
+                          else
+                            'alert-error'
+                          end
             id_attr = (type.to_s == 'notice' && flash[:job_id]) ? "id='job-progress-notifier'" : ""
           %>
-          <div <%= id_attr.html_safe %> class="alert <%= alert_class %> shadow-lg mb-4">
-            <div class="text-base-200">
-              <span><%= msg %></span>
-            </div>
+          <div <%= id_attr.html_safe %> class="text-base-200 alert <%= alert_class %> shadow-lg mb-4">
+            <span><%= msg %></span>
           </div>
         <% end %>
       </div>
@@ -35,58 +39,65 @@
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         const flashContainer = document.getElementById('flash-container');
+        if (!flashContainer) return;
+
         const progressNotifier = document.getElementById('job-progress-notifier');
-        if (!flashContainer || !progressNotifier) return;
-
         const jobId = flashContainer.dataset.jobId;
-        if (!jobId) return;
 
-        const setNotifierState = (status, message, alertType, isProcessing = false) => {
-          const icon_spinner = `<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6 animate-spin text-base-200" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>`;
-          const icon_success = `<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6 text-base-200" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
-          const icon_error = `<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6 text-base-200" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
-          
-          let icon = isProcessing ? icon_spinner : (alertType === 'alert-success' ? icon_success : icon_error);
-          
-          progressNotifier.className = `alert ${alertType} shadow-lg mb-4`;
-          
-          progressNotifier.innerHTML = `
-            ${icon}
-            <span class="text-base-200">${message}</span>
-            ${alertType === 'alert-error' ? '<div class="flex-none ml-auto"><button class="btn btn-sm btn-ghost" onclick="this.closest(\'.alert\').remove()">Fechar</button></div>' : ''}
-          `;
-        };
+        if (progressNotifier && jobId) {
+          const setNotifierState = (status, message, alertType, isProcessing = false) => {
+            const icon_spinner = `<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6 animate-spin text-base-200" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>`;
+            const icon_success = `<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6 text-base-200" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+            const icon_error = `<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6 text-base-200" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+            let icon = isProcessing ? icon_spinner : (alertType === 'alert-success' ? icon_success : icon_error);
+            
+            progressNotifier.className = `alert ${alertType} shadow-lg mb-4`;
+            progressNotifier.innerHTML = `
+              ${icon}
+              <span class="text-base-200">${message}</span>
+              ${alertType === 'alert-error' ? '<div class="flex-none ml-auto"><button class="btn btn-sm btn-ghost" onclick="this.closest(\'.alert\').remove()">Fechar</button></div>' : ''}
+            `;
+          };
 
-        const checkStatus = () => {
-          fetch(`/api/v1/progress/${jobId}`)
-            .then(response => response.ok ? response.json() : Promise.reject('Network error'))
-            .then(data => {
-              const status = data.status || 'unknown';
-
-              if (status === 'processing' || status === 'unknown') {
-                setNotifierState(status, `Análise para o job <strong>${jobId}</strong> em andamento...`, 'alert-info', true);
-              } else if (status === 'done') {
+          const checkStatus = () => {
+            fetch(`/api/v1/progress/${jobId}`)
+              .then(response => response.ok ? response.json() : Promise.reject('Network error'))
+              .then(data => {
+                const status = data.status || 'unknown';
+                if (status === 'processing' || status === 'unknown') {
+                  setNotifierState(status, `Análise para o job <strong>${jobId}</strong> em andamento...`, 'alert-info', true);
+                } else if (status === 'done') {
+                  clearInterval(intervalId);
+                  setNotifierState(status, 'Análise concluída com sucesso! A página será atualizada.', 'alert-success');
+                  setTimeout(() => {
+                    progressNotifier.style.transition = 'opacity 0.5s ease-out';
+                    progressNotifier.style.opacity = '0';
+                    setTimeout(() => window.location.reload(), 500);
+                  }, 2500);
+                } else if (status === 'failed') {
+                  clearInterval(intervalId);
+                  setNotifierState(status, 'A análise falhou. Verifique os logs do servidor.', 'alert-error');
+                }
+              })
+              .catch(error => {
                 clearInterval(intervalId);
-                setNotifierState(status, 'Análise concluída com sucesso! A página será atualizada.', 'alert-success');
-                setTimeout(() => {
-                  progressNotifier.style.transition = 'opacity 0.5s ease-out';
-                  progressNotifier.style.opacity = '0';
-                  setTimeout(() => window.location.reload(), 500);
-                }, 2500);
-              } else if (status === 'failed') {
-                clearInterval(intervalId);
-                setNotifierState(status, 'A análise falhou. Verifique os logs do servidor.', 'alert-error');
-              }
-            })
-            .catch(error => {
-              clearInterval(intervalId);
-              setNotifierState('error', 'Erro ao verificar o progresso do job.', 'alert-error');
-              console.error('Error fetching job status:', error);
-            });
-        };
+                setNotifierState('error', 'Erro ao verificar o progresso do job.', 'alert-error');
+                console.error('Error fetching job status:', error);
+              });
+          };
 
-        const intervalId = setInterval(checkStatus, 3000);
-        checkStatus();
+          const intervalId = setInterval(checkStatus, 3000);
+          checkStatus();
+        }
+
+        const generalAlerts = flashContainer.querySelectorAll('.alert:not(#job-progress-notifier)');
+        generalAlerts.forEach(alert => {
+          setTimeout(() => {
+            alert.style.transition = 'opacity 0.5s ease-out';
+            alert.style.opacity = '0';
+            setTimeout(() => alert.remove(), 500); 
+          }, 5000);
+        });
       });
     </script>
   </body>
