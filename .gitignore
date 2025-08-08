@@ -28,5 +28,9 @@
 .DS_Store
 coverage/
 .env
-tools/
+/tools/*
+!tools/generate_api_data.rb
 db.json
+
+# dev runtime
+.local/
