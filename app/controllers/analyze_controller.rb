@@ -7,9 +7,10 @@ class AnalyzeController < ApplicationController
     if username.blank?
       flash[:alert] = 'O nome de usuário não pode ficar em branco.'
     else
-      ImportUserJob.perform_later(username: username)
+      job = ImportUserJob.perform_later(username: username)
 
-      flash[:notice] = "A análise para o usuário '#{username}' foi iniciada em segundo plano."
+      flash[:notice] = "A análise para o usuário '#{username}' foi iniciada."
+      flash[:job_id] = job.job_id
     end
 
     redirect_to root_path
