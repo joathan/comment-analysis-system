@@ -1,0 +1,153 @@
+services:
+  db:
+    platform: linux/amd64
+    image: postgres:15
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - target: 5432
+        published: ${HOST_PG_PORT-}
+        protocol: tcp
+        mode: host
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  libretranslate:
+    platform: linux/amd64
+    image: libretranslate/libretranslate:latest
+    ports:
+      - "5001:5000"
+    environment:
+      LT_LOAD_ONLY: en,pt,pb
+      LT_UPDATE_MODELS: "false"
+      LT_DEBUG: "true"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 90
+      start_period: 60s
+
+  jsonserver:
+    build:
+      context: ./docker/json-server
+    volumes:
+      - ./docker/json-server/db.json:/data/db.json
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:6000"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 5s
+
+  redis:
+    platform: linux/amd64
+    image: redis:7
+    command: ["redis-server","--appendonly","yes"]
+    volumes:
+      - redis_data:/data
+    ports:
+      - target: 6379
+        published: ${HOST_REDIS_PORT-}
+        protocol: tcp
+        mode: host
+
+  web:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: comment-analysis-system:web
+    command: bundle exec rails server -b 0.0.0.0 -p 3000
+    environment:
+      RAILS_ENV: development
+      REDIS_URL: redis://redis:6379/0
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      JSON_API_URL_INTERNAL: http://nginx/external/json
+      TRANSLATE_API_URL_INTERNAL: http://libretranslate:5000/translate
+    volumes:
+      - .:/app:cached
+      - bundle:/gems
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_started }
+      jsonserver: { condition: service_started }
+      libretranslate: { condition: service_started }
+
+  sidekiq:
+    platform: linux/amd64
+    image: comment-analysis-system:web
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    environment:
+      RAILS_ENV: development
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      REDIS_URL: redis://redis:6379/0
+      JSON_API_URL_INTERNAL: http://nginx/external/json
+      TRANSLATE_API_URL_INTERNAL: http://libretranslate:5000/translate
+    volumes:
+      - .:/app:cached
+      - bundle:/gems
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      jsonserver:
+        condition: service_healthy
+      libretranslate:
+        condition: service_healthy
+
+  nginx:
+    platform: linux/amd64
+    image: nginx:1.27-alpine
+    depends_on:
+      - web
+      - jsonserver
+      - libretranslate
+    ports:
+      - "${HOST_HTTP_PORT:-80}:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+
+  # roda sob demanda com: docker compose run --rm seed_json
+  seed_json:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+      x-bake:
+        platforms: [linux/amd64]
+    image: comment-analysis-system:web-amd64
+    entrypoint: ["bundle","exec","ruby"]
+    command: ["tools/generate_api_data.rb"]
+    environment:
+      SKIP_DB_PREPARE: "1"
+      SKIP_JS_INSTALL: "1"
+      JSON_OUT: /json/db.json
+      SEED: "${SEED:-42}"
+      USERS: "${USERS:-10}"
+      POSTS_MIN: "${POSTS_MIN:-5}"
+      POSTS_MAX: "${POSTS_MAX:-10}"
+      COMMENTS_MIN: "${COMMENTS_MIN:-2}"
+      COMMENTS_MAX: "${COMMENTS_MAX:-8}"
+      KEYWORDS: "${KEYWORDS:-excellent,amazing,warning,fail,approved,blocked,urgent,refund,quality,delay}"
+    volumes:
+      - .:/app
+      - bundle:/gems
+      - ./docker/json-server:/json
+
+volumes:
+  bundle:
+  pg_data:
+  redis_data:
+  libretranslate_data:
+  json_data:
