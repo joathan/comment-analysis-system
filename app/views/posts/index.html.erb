@@ -20,7 +20,7 @@
                 <tr class="hover:bg-neutral/5">
                   <td class="py-2"><%= comment.name %></td>
                   <td class="py-2">
-                    <%= comment.body %>
+                    <%= comment.translated_body %>
                     <% if comment.state == "approved" %>
                       <% matched = highlight_matched_keywords(comment) %>
                       <% if matched.any? %>
