@@ -1,22 +1,52 @@
 # frozen_string_literal: true
 
 class CommentProcessingService
-  def initialize(comment)
+  def initialize(comment, translation_service: TranslationService.new, metrics_cache: MetricsCacheService.new,
+                 logger: Rails.logger, target_language: 'pt-BR')
     @comment = comment
+    @translation_service = translation_service
+    @metrics_cache = metrics_cache
+    @logger = logger
+    @target_language = target_language
   end
 
   def call
-    return unless @comment.may_process?
+    @comment.with_lock do
+      return unless @comment.may_process?
 
-    @comment.process!
+      @comment.process!
 
-    translated = @comment.translated_body.presence || TranslationService.new.translate(@comment.body, target: 'pt-BR')
-    @comment.update!(translated_body: translated)
+      translated
+      change_state
+      invalidate_cache
+    end
+  rescue StandardError => e
+    @logger.error("CommentProcessingService failed for comment_id=#{@comment.id}: #{e.class} - #{e.message}")
+    raise
+  end
 
-    if Keyword.approved?(translated)
+  private
+
+  def translated
+    @logger.info("Translating comment_id=#{@comment.id} to #{@target_language}")
+    translated = @translation_service.translate(@comment.body, target: @target_language)
+    @logger.info("Translation successful for comment_id=#{@comment.id}: #{translated}")
+    @comment.update!(translated_body: translated.presence || @comment.body)
+  rescue TranslationService::Error => e
+    @logger.warn("Translation failed: #{e.message}")
+    @comment.update!(translated_body: @comment.body)
+  end
+
+  def change_state
+    if Keyword.approved?(@comment.translated_body)
       @comment.approve!
     else
       @comment.reject!
     end
+  end
+
+  def invalidate_cache
+    @metrics_cache.invalidate_user(@comment.post.user)
+    @metrics_cache.invalidate_group
   end
 end
