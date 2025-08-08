@@ -12,7 +12,7 @@ help:
 # Comandos de Gerenciamento do Ambiente
 # ==============================================================================
 
-setup: build db-create db-migrate test redis-flush ## Configura a aplicação do zero.
+setup: env-setup build db-create db-migrate test redis-flush ## Configura a aplicação do zero, incluindo o arquivo .env.
 build: ## Constrói ou reconstrói as imagens Docker.
 	@echo "Building Docker images..."
 	$(COMPOSE) build
@@ -33,8 +33,16 @@ clean: redis-flush ## Limpa o ambiente Docker (containers, volumes, redes).
 	$(COMPOSE) down -v --remove-orphans
 
 # ==============================================================================
-# Comandos de Banco de Dados
+# Comandos de Banco de Dados e Configuração
 # ==============================================================================
+
+env-setup: ## Cria o arquivo .env a partir do .env.example, se não existir.
+	@if [ ! -f .env ]; then \
+		echo "Arquivo .env não encontrado. Criando a partir de .env.example..."; \
+		cp .env.example .env; \
+	else \
+		echo "Arquivo .env já existe."; \
+	fi
 
 db-create: ## Cria o banco de dados.
 	@echo "Creating database..."
@@ -77,4 +85,4 @@ attach: ## Anexa ao container web para debugging (ex: binding.pry).
 	@docker attach $$(docker compose ps -q web)
 
 # Declara os alvos que não são arquivos para evitar conflitos.
-.PHONY: help setup build up down restart clean db-create db-migrate db-seed test redis-flush bash console logs attach
+.PHONY: help setup build up down restart clean env-setup db-create db-migrate db-seed test redis-flush bash console logs attach

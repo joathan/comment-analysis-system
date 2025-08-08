@@ -10,6 +10,7 @@ Este projeto é uma aplicação Ruby on Rails projetada para importar dados de u
 * [Collection de Endpoints da API](#collection-de-endpoints-da-api)
 * [Escopo do Projeto vs. Funcionalidades Adicionais](#escopo-do-projeto-vs-funcionalidades-adicionais)
 * [Setup e Desenvolvimento com Docker](#setup-e-desenvolvimento-com-docker)
+* [Gerenciamento de Ambiente](#gerenciamento-de-ambiente)
 
 ---
 
@@ -200,7 +201,7 @@ Para configurar o ambiente de desenvolvimento pela primeira vez, siga estes pass
     ```
 
 2. **Execute o comando de setup:**
-    Este comando irá construir as imagens Docker, criar o banco de dados, rodar as migrações e executar a suíte de testes para garantir que tudo está funcionando corretamente.
+    Este comando irá construir as imagens Docker, criar o banco de dados, rodar as migrações, executar a suíte de testes e **limpar o cache do Redis** para garantir um ambiente limpo.
 
     ```sh
     make setup
@@ -226,4 +227,13 @@ A aplicação estará acessível em `http://localhost`. A interface do Sidekiq e
 * `make console`: Abre um console do Rails (`rails c`).
 * `make db-migrate`: Roda as migrações pendentes do banco de dados.
 * `make logs`: Exibe os logs de todos os serviços em tempo real.
-* `make clean`: Para e remove todos os containers, volumes e redes associados ao projeto. **Use com cuidado, pois isso removerá os dados do seu banco de dados.**
+* `make attach`: Anexa ao container da aplicação web para interagir com sessões de debug (ex: `binding.pry`).
+* `make clean`: Para e remove todos os containers, volumes e redes associados ao projeto, e **limpa o cache do Redis**. Use com cuidado, pois isso removerá os dados do seu banco de dados.
+
+### Gerenciamento de Ambiente
+
+A configuração do ambiente (banco de dados, Redis, APIs externas) é gerenciada através de variáveis de ambiente.
+
+* **`.env.example`**: Este é um arquivo de template que contém as configurações padrão para rodar a aplicação com Docker, além de uma seção comentada com exemplos para um setup local (sem Docker).
+
+* **`.env`**: Este arquivo contém as variáveis de ambiente que a aplicação irá usar. Ele não está no controle de versão (`.gitignore`). Ao rodar `make setup`, este arquivo será criado automaticamente a partir do `.env.example` se ele não existir.

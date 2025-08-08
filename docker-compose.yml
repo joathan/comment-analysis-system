@@ -3,18 +3,18 @@ services:
     platform: linux/amd64
     image: postgres:15
     environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - pg_data:/var/lib/postgresql/data
     ports:
       - target: 5432
-        published: ${HOST_PG_PORT-}
+        published: ${HOST_PG_PORT:-5432}
         protocol: tcp
         mode: host
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -25,11 +25,10 @@ services:
     ports:
       - "5001:5000"
     environment:
-      LT_LOAD_ONLY: en,pt,pb
+      LT_LOAD_ONLY: en,pt
       LT_UPDATE_MODELS: "false"
-      LT_DEBUG: "true"
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:5001/health"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:5000/health"]
       interval: 10s
       timeout: 5s
       retries: 90
@@ -56,7 +55,7 @@ services:
       - redis_data:/data
     ports:
       - target: 6379
-        published: ${HOST_REDIS_PORT-}
+        published: ${HOST_REDIS_PORT:-6379}
         protocol: tcp
         mode: host
 
@@ -67,23 +66,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        BUNDLE_WITHOUT: ""
     image: comment-analysis-system:web
     command: bundle exec rails server -b 0.0.0.0 -p 3000
-    environment:
-      HISTFILE: /history/.bash_history
-      HISTSIZE: "1000000"
-      HISTFILESIZE: "1000000"
-      PROMPT_COMMAND: 'history -a; history -n;'
-      IRBRC: /app/docker/irbrc
-      PRYRC: /app/docker/pryrc
-      RAILS_ENV: development
-      REDIS_URL: redis://redis:6379/0
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      JSON_API_URL_INTERNAL: http://nginx/external/json
-      TRANSLATE_API_URL_INTERNAL: http://libretranslate:5000/translate
+    env_file:
+      - .env
     volumes:
       - .:/app:cached
       - bundle:/gems
@@ -98,7 +84,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 20s 
+      start_period: 20s
 
   sidekiq:
     platform: linux/amd64
@@ -106,30 +92,16 @@ services:
     stdin_open: true
     image: comment-analysis-system:web
     command: bundle exec sidekiq -C config/sidekiq.yml
-    environment:
-      HISTFILE: /history/.bash_history
-      HISTSIZE: "100000"
-      HISTFILESIZE: "100000"
-      PROMPT_COMMAND: 'history -a; history -n;'
-      IRBRC: /app/docker/irbrc
-      PRYRC: /app/docker/pryrc
-      RAILS_ENV: development
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      REDIS_URL: redis://redis:6379/0
-      JSON_API_URL_INTERNAL: http://nginx/external/json
-      TRANSLATE_API_URL_INTERNAL: http://libretranslate:5000/translate
+    env_file:
+      - .env
     volumes:
       - .:/app:cached
       - bundle:/gems
       - ./.local/history:/history
     depends_on:
-      web:
-        condition: service_healthy
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_started
+      web: { condition: service_healthy }
+      db: { condition: service_healthy }
+      redis: { condition: service_started }
 
   nginx:
     platform: linux/amd64
@@ -143,29 +115,19 @@ services:
     volumes:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
 
-  # roda sob demanda com: docker compose run --rm seed_json
   seed_json:
     profiles: ["tools"]
     platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile
-      x-bake:
-        platforms: [linux/amd64]
     image: comment-analysis-system:web-amd64
     entrypoint: ["bundle","exec","ruby"]
     command: ["tools/generate_api_data.rb"]
+    env_file:
+      - .env
     environment:
-      SKIP_DB_PREPARE: "1"
-      SKIP_JS_INSTALL: "1"
       JSON_OUT: /json/db.json
-      SEED: "${SEED:-42}"
-      USERS: "${USERS:-10}"
-      POSTS_MIN: "${POSTS_MIN:-5}"
-      POSTS_MAX: "${POSTS_MAX:-10}"
-      COMMENTS_MIN: "${COMMENTS_MIN:-2}"
-      COMMENTS_MAX: "${COMMENTS_MAX:-8}"
-      KEYWORDS: "${KEYWORDS:-excellent,amazing,warning,fail,approved,blocked,urgent,refund,quality,delay}"
     volumes:
       - .:/app
       - bundle:/gems
@@ -175,6 +137,3 @@ volumes:
   bundle:
   pg_data:
   redis_data:
-  libretranslate_data:
-  json_data:
-  dev_history:
