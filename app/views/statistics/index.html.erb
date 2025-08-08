@@ -1,4 +1,16 @@
 <div class="container mx-auto py-10">
+  <section class="mb-12">
+    <div class="card bg-base-100 shadow rounded-xl p-6">
+      <h2 class="text-xl font-semibold mb-4 text-neutral">Iniciar Nova Análise de Usuário</h2>
+      <%= form_with(url: analyze_index_path, method: :post, local: true, html: { class: "flex items-center gap-4" }) do %>
+        <%= text_field_tag :username, nil,
+          placeholder: "Digite o nome de usuário (ex: Bret)",
+          class: "input input-bordered w-full max-w-xs" %>
+        <%= submit_tag "Analisar", class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </section>
+
   <h1 class="text-3xl font-bold mb-6">Estatísticas do Sistema</h1>
 
   <section class="mb-10">

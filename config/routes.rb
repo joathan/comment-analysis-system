@@ -3,20 +3,23 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  resources :keywords
-  resources :posts, only: [:index] do
-    resources :comments, only: [:index]
-  end
-  get 'healthcheck', to: 'application#healthcheck'
+  mount Sidekiq::Web => '/sidekiq'
+
   root 'statistics#index'
 
-  mount Sidekiq::Web => '/sidekiq'
+  resources :keywords
+  resources :posts, only: [:index]
+  resources :statistics, only: [:index]
+
+  resources :analyze, only: [:create]
 
   namespace :api do
     namespace :v1 do
-      resources :analyze, only: [:create]
+      post 'analyze', to: 'analyze#create'
       get 'analyze/:username', to: 'analyze#show'
       get 'progress/:job_id', to: 'progress#show'
     end
   end
+
+  get 'healthcheck', to: 'application#healthcheck'
 end
