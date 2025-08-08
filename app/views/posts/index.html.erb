@@ -1,0 +1,51 @@
+<div class="max-w-5xl mx-auto">
+  <h1 class="text-2xl font-bold text-neutral mb-6">Posts e Comentários</h1>
+
+  <% @posts.each do |post| %>
+    <div class="bg-white border border-neutral/10 rounded-xl shadow-sm mb-6 p-6">
+      <h2 class="text-lg font-semibold text-neutral mb-4"><%= post.title %></h2>
+
+      <% if post.comments.any? %>
+        <div class="overflow-x-auto">
+          <table class="table w-full">
+            <thead>
+              <tr>
+                <th class="text-left text-sm font-medium text-neutral">Usuário</th>
+                <th class="text-left text-sm font-medium text-neutral">Comentário</th>
+                <th class="text-left text-sm font-medium text-neutral">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% post.comments.each do |comment| %>
+                <tr class="hover:bg-neutral/5">
+                  <td class="py-2"><%= comment.name %></td>
+                  <td class="py-2">
+                    <%= comment.body %>
+                    <% if comment.state == "approved" %>
+                      <% matched = highlight_matched_keywords(comment) %>
+                      <% if matched.any? %>
+                        <div class="text-xs text-neutral/60 mt-1">
+                          Palavras encontradas: <%= matched.join(", ") %>
+                        </div>
+                      <% end %>
+                    <% end %>
+                  </td>
+                  <td class="py-2">
+                    <% state_class = case comment.state
+                      when "approved" then "badge-success"
+                      when "rejected" then "badge-error"
+                      else "badge-neutral"
+                    end %>
+                    <span class="badge <%= state_class %>"><%= comment.state %></span>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <p class="text-neutral/60 italic">Sem comentários</p>
+      <% end %>
+    </div>
+  <% end %>
+</div>

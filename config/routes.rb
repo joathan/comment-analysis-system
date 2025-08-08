@@ -4,6 +4,9 @@ require 'sidekiq/web'
 
 Rails.application.routes.draw do
   resources :keywords
+  resources :posts, only: [:index] do
+    resources :comments, only: [:index]
+  end
   root 'statistics#index'
 
   mount Sidekiq::Web => '/sidekiq'
