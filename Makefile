@@ -12,23 +12,23 @@ help:
 # Comandos de Gerenciamento do Ambiente
 # ==============================================================================
 
-setup: db-json env-setup build db-create db-migrate test redis-flush ## Configura a aplicação do zero, incluindo o arquivo .env.
-build: ## Constrói ou reconstrói as imagens Docker.
+setup: check-env db-json build db-create db-migrate test redis-flush ## Configura a aplicação do zero.
+build: check-env ## Constrói ou reconstrói as imagens Docker.
 	@echo "Building Docker images..."
 	$(COMPOSE) build
 
-up: ## Inicia todos os serviços em segundo plano.
+up: check-env ## Inicia todos os serviços em segundo plano.
 	@echo "Starting all services..."
 	$(COMPOSE) up -d
 
-down: ## Para todos os serviços.
+down: check-env ## Para todos os serviços.
 	@echo "Stopping all services..."
 	$(COMPOSE) down
 
 restart: down up ## Reinicia todos os serviços.
 	@echo "Restarting services..."
 
-clean: redis-flush ## Limpa o ambiente Docker (containers, volumes, redes).
+clean: check-env redis-flush ## Limpa o ambiente Docker (containers, volumes, redes).
 	@echo "Cleaning up Docker environment (containers, volumes, networks)..."
 	$(COMPOSE) down -v --remove-orphans
 
@@ -36,16 +36,8 @@ clean: redis-flush ## Limpa o ambiente Docker (containers, volumes, redes).
 # Comandos de Banco de Dados e Configuração
 # ==============================================================================
 
-env-setup: ## Cria o arquivo .env a partir do .env.example, se não existir.
-	@if [ ! -f .env ]; then \
-		echo "Arquivo .env não encontrado. Criando a partir de .env.example..."; \
-		cp .env.example .env; \
-	else \
-		echo "Arquivo .env já existe."; \
-	fi
-
-db-json: ## Cria o banco de dados do arquivo db.json.
-	@if [ -f docker/json-server/db.json ]; then \
+db-json: check-env ## Cria o banco de dados do arquivo db.json.
+	@if test -f docker/json-server/db.json; then \
 		echo "Arquivo db.json encontrado. Criando o banco de dados..."; \
 		$(COMPOSE) run --rm seed_json; \
 	else \
@@ -54,15 +46,15 @@ db-json: ## Cria o banco de dados do arquivo db.json.
 		$(COMPOSE) run --rm seed_json; \
 	fi
 
-db-create: ## Cria o banco de dados.
+db-create: check-env ## Cria o banco de dados.
 	@echo "Creating database..."
 	$(COMPOSE) run --rm web bundle exec rails db:create
 
-db-migrate: ## Executa as migrações do banco de dados.
+db-migrate: check-env ## Executa as migrações do banco de dados.
 	@echo "Running database migrations..."
 	$(COMPOSE) run --rm web bundle exec rails db:migrate
 
-db-seed: ## Popula o banco de dados com dados iniciais.
+db-seed: check-env ## Popula o banco de dados com dados iniciais.
 	@echo "Seeding the database..."
 	$(COMPOSE) run --rm web bundle exec rails db:seed
 
@@ -70,29 +62,39 @@ db-seed: ## Popula o banco de dados com dados iniciais.
 # Comandos de Desenvolvimento e Teste
 # ==============================================================================
 
-test: ## Executa a suíte de testes (RSpec).
+test: check-env ## Executa a suíte de testes (RSpec).
 	@echo "Running RSpec test suite..."
 	$(COMPOSE) run --rm web bundle exec rspec
 
-redis-flush: ## Limpa todo o cache do Redis.
+redis-flush: check-env ## Limpa todo o cache do Redis.
 	@echo "Flushing Redis cache..."
 	@$(COMPOSE) exec redis redis-cli FLUSHALL || echo "Redis container not running or not ready, skipping flush."
 
-bash: ## Abre um terminal (bash) no container da aplicação web.
+bash: check-env ## Abre um terminal (bash) no container da aplicação web.
 	@echo "Opening bash shell in web container..."
 	$(COMPOSE) exec web /bin/bash
 
-console: ## Abre um console do Rails.
+console: check-env ## Abre um console do Rails.
 	@echo "Opening Rails console..."
 	$(COMPOSE) exec web bundle exec rails console
 
-logs: ## Exibe os logs de todos os serviços em tempo real.
+logs: check-env ## Exibe os logs de todos os serviços em tempo real.
 	@echo "Tailing logs..."
 	$(COMPOSE) logs -f
 
-attach: ## Anexa ao container web para debugging (ex: binding.pry).
+attach: check-env ## Anexa ao container web para debugging (ex: binding.pry).
 	@echo "Attaching to web container... (Pressione Ctrl+C para desanexar)"
 	@docker attach $$(docker compose ps -q web)
 
+# ==============================================================================
+# Alvo Interno - Não deve ser chamado diretamente
+# ==============================================================================
+
+check-env: ## Garante que o .env exista antes de qualquer comando Docker.
+	@if ! test -f .env; then \
+		echo "Arquivo .env não encontrado. Criando a partir de .env.example..."; \
+		cp .env.example .env; \
+	fi
+
 # Declara os alvos que não são arquivos para evitar conflitos.
-.PHONY: help setup build up down restart clean env-setup db-create db-migrate db-seed test redis-flush bash console logs attach
+.PHONY: help setup build up down restart clean db-json db-create db-migrate db-seed test redis-flush bash console logs attach check-env
