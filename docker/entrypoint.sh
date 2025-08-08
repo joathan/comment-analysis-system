@@ -15,14 +15,14 @@ if [ -f /app/package.json ] && [ "${SKIP_JS_INSTALL:-0}" != "1" ]; then
   yarn install --frozen-lockfile || yarn install
 fi
 
-if [ "${SKIP_DB_PREPARE:-0}" != "1" ]; then
-  echo "→ Preparando banco..."
-  if bundle exec rails -T | grep -q "db:prepare"; then
-    bundle exec rails db:prepare
-  else
-    bundle exec rails db:create || true
-    bundle exec rails db:migrate
-  fi
-fi
+# if [ "${SKIP_DB_PREPARE:-0}" != "1" ]; then
+#   echo "→ Preparando banco..."
+#   if bundle exec rails -T | grep -q "db:prepare"; then
+#     bundle exec rails db:prepare
+#   else
+#     bundle exec rails db:create || true
+#     bundle exec rails db:migrate
+#   fi
+# fi
 
 exec "$@"
