@@ -12,7 +12,7 @@ help:
 # Comandos de Gerenciamento do Ambiente
 # ==============================================================================
 
-setup: env-setup build db-create db-migrate test redis-flush ## Configura a aplicação do zero, incluindo o arquivo .env.
+setup: db-json env-setup build db-create db-migrate test redis-flush ## Configura a aplicação do zero, incluindo o arquivo .env.
 build: ## Constrói ou reconstrói as imagens Docker.
 	@echo "Building Docker images..."
 	$(COMPOSE) build
@@ -42,6 +42,14 @@ env-setup: ## Cria o arquivo .env a partir do .env.example, se não existir.
 		cp .env.example .env; \
 	else \
 		echo "Arquivo .env já existe."; \
+	fi
+
+db-json: ## Cria o banco de dados do arquivo db.json.
+	@if [ -f ./docker/json-server/db.json ]; then \
+		echo "Arquivo db.json encontrado. Criando o banco de dados..."; \
+		$(COMPOSE) run --rm seed_json; \
+	else \
+		echo "Arquivo db.json não encontrado. Certifique-se de que o servidor JSON está em execução."; \
 	fi
 
 db-create: ## Cria o banco de dados.
