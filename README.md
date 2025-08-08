@@ -195,8 +195,8 @@ Para configurar o ambiente de desenvolvimento pela primeira vez, siga estes pass
 1. **Clone o repositório:**
 
     ```sh
-    git clone <URL_DO_REPOSITORIO>
-    cd <NOME_DO_PROJETO>
+    git clone git@github.com:joathan/comment-analysis-system.git
+    cd comment-analysis-system
     ```
 
 2. **Execute o comando de setup:**
